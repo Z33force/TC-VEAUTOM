@@ -7,7 +7,9 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//hallo!
-//HOI]]></ST>
+//HOI
+
+//eigen branch]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
