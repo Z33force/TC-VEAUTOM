@@ -6,7 +6,8 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//hallo!]]></ST>
+      <ST><![CDATA[//hallo!
+//HOI]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
