@@ -234,8 +234,8 @@
     "MAXREQUESTSIZE": 1048576,
     "MAXSESSIONS": 128,
     "PERMESSAGEDEFLATEENABLED": true,
-    "PROJECTNAME": "",
-    "PROJECTVERSION": "",
+    "PROJECTNAME": "TcHmiProject1",
+    "PROJECTVERSION": "1.0.0.0",
     "RECORDING_MESSAGE_MAX_LENGTH": 5120,
     "REMOTESERVERS": {},
     "REMOTESERVERS_CERTIFICATES": [],
@@ -3863,6 +3863,10 @@
     "USERSELECTTYPE": 0,
     "VIDEOSEGMENTSIZE": 1048576,
     "VIRTUALDIRECTORIES": {
-        "/": "www"
+        "/": "..\\..\\TcHmiProject1\\",
+        "/Beckhoff.TwinCAT.HMI.Controls": "..\\..\\Packages\\Beckhoff.TwinCAT.HMI.Controls.14.3.277\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.Framework": "..\\..\\Packages\\Beckhoff.TwinCAT.HMI.Framework.14.3.277\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.Functions": "..\\..\\Packages\\Beckhoff.TwinCAT.HMI.Functions.14.3.277\\runtimes\\native1.12-tchmi",
+        "/bin": "..\\..\\TcHmiProject1\\bin\\"
     }
 }
