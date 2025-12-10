@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="MotorStatus" Id="{733f9dd0-353e-4e31-926e-9fcc3743effe}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE MotorStatus :
+(
+	Aan := 0,
+	Uit
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -3,8 +3,23 @@
   <Itf Name="Motor" Id="{d3f47777-bd5b-48b1-bdcb-ea49bd88495e}">
     <Declaration><![CDATA[INTERFACE Motor
 ]]></Declaration>
-    <Method Name="AanUit" Id="{060d63f9-787c-496d-9022-28764b8b1e72}">
-      <Declaration><![CDATA[METHOD AanUit
+    <Method Name="Aan" Id="{060d63f9-787c-496d-9022-28764b8b1e72}">
+      <Declaration><![CDATA[METHOD Aan
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="MotorStatus" Id="{74bf9a58-abad-4fd1-b45d-2376d0b9f086}">
+      <Declaration><![CDATA[PROPERTY MotorStatus : MotorStatus]]></Declaration>
+      <Get Name="Get" Id="{cbbdf476-21d7-4c49-b33e-149823c47cf1}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{d4e3075b-24cb-4947-8d59-d54dd0417254}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Uit" Id="{123d9254-67f0-4f43-bd52-c35d6297472c}">
+      <Declaration><![CDATA[METHOD Uit
 VAR_INPUT
 END_VAR
 ]]></Declaration>
