@@ -10,7 +10,25 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[// kan aan en uit en reageert op errors, heeft lichtsensor aan het einde van het banddel]]></ST>
     </Implementation>
+    <Method Name="HandleErrors" Id="{4482d789-05c3-4af2-9881-523428224908}">
+      <Declaration><![CDATA[METHOD HandleErrors : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="LichtSensor" Id="{e295db0b-e309-4826-aa12-b8844bc13c3f}">
+      <Declaration><![CDATA[METHOD LichtSensor : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
   </POU>
 </TcPlcObject>
