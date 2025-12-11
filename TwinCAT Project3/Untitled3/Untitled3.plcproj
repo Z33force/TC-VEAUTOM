@@ -18,7 +18,13 @@
     <LibraryReferences>{15624de6-a98d-4212-abae-3c1753f86e6c}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\E_MotorStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_ServoMotor.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\I_ServoMotor.TcIO">

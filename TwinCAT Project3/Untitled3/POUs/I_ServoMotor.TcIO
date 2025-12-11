@@ -6,18 +6,10 @@
     <Method Name="BeweegNaarDoel" Id="{4f8b0714-7117-4f8d-913a-bddf18ac46d8}">
       <Declaration><![CDATA[METHOD BeweegNaarDoel
 VAR_INPUT
+IDoelPositie : INT;
 END_VAR
 ]]></Declaration>
     </Method>
-    <Property Name="DoelPositie" Id="{2f19f556-3609-47a6-b7da-5b4b1d4853bd}">
-      <Declaration><![CDATA[PROPERTY DoelPositie : int]]></Declaration>
-      <Get Name="Get" Id="{009ace2c-5c01-4643-b382-4715959ee1ac}">
-        <Declaration><![CDATA[]]></Declaration>
-      </Get>
-      <Set Name="Set" Id="{3c8bf024-b765-4728-8adc-3950c46589a5}">
-        <Declaration><![CDATA[]]></Declaration>
-      </Set>
-    </Property>
     <Property Name="Positie" Id="{d3d21827-b776-4526-9cf4-5b9802ab2987}">
       <Declaration><![CDATA[PROPERTY Positie : int]]></Declaration>
       <Get Name="Get" Id="{9c055e2c-96fa-4e41-9eaf-6112a7c3e721}">
