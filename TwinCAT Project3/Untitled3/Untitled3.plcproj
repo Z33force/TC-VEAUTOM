@@ -18,10 +18,13 @@
     <LibraryReferences>{15624de6-a98d-4212-abae-3c1753f86e6c}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\Modus.TcDUT">
+    <Compile Include="DUTs\ELopendeBandStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\MotorStatus.TcDUT">
+    <Compile Include="DUTs\EModus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\EMotorStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
@@ -46,6 +49,7 @@
   <ItemGroup>
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
+    <Folder Include="POUs\modules" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>

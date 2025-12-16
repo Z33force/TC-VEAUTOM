@@ -1,13 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <DUT Name="MotorStatus" Id="{733f9dd0-353e-4e31-926e-9fcc3743effe}">
+  <DUT Name="ELopendeBandStatus" Id="{75141f50-25e9-4d67-8389-7fe1d1bef885}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 {attribute 'strict'}
 {attribute 'to_string'}
-TYPE MotorStatus :
+TYPE ELopendeBandStatus :
 (
-	Aan := 0,
-	Uit
+	Stopped := 0,
+	Starting,
+	Stopping,
+	Running,
+	Error
 );
 END_TYPE
 ]]></Declaration>

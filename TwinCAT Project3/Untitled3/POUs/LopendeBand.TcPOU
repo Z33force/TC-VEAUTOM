@@ -30,5 +30,42 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
+    <Property Name="LopendeBandStatus" Id="{e25f0d20-e450-4241-b528-fbcd05cd4bf1}">
+      <Declaration><![CDATA[PROPERTY LopendeBandStatus : ELopendeBandStatus]]></Declaration>
+      <Get Name="Get" Id="{7bf1af54-c934-41f2-97ee-94bf6422b8bf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{89f06e9d-0dbc-4bb0-9d04-ba961ffc06be}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="MotorAan" Id="{9103c7af-6c47-4658-92d4-6ad86d23e3a9}">
+      <Declaration><![CDATA[METHOD MotorAan
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MotorUit" Id="{6cf8c88b-0239-4171-9cdc-4661629a3699}">
+      <Declaration><![CDATA[METHOD MotorUit
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
   </POU>
 </TcPlcObject>

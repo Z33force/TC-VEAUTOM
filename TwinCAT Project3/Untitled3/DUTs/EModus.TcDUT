@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <DUT Name="Modus" Id="{bd383948-cf02-485c-b3b4-fda68b408657}">
+  <DUT Name="EModus" Id="{bd383948-cf02-485c-b3b4-fda68b408657}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 {attribute 'strict'}
 {attribute 'to_string'}
-TYPE Modus :
+TYPE EModus :
 (
 	Auto := 0,
 	Manual,

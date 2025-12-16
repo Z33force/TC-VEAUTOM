@@ -10,7 +10,7 @@ END_VAR
 ]]></Declaration>
     </Method>
     <Property Name="MotorStatus" Id="{74bf9a58-abad-4fd1-b45d-2376d0b9f086}">
-      <Declaration><![CDATA[PROPERTY MotorStatus : MotorStatus]]></Declaration>
+      <Declaration><![CDATA[PROPERTY MotorStatus : EMotorStatus]]></Declaration>
       <Get Name="Get" Id="{cbbdf476-21d7-4c49-b33e-149823c47cf1}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
