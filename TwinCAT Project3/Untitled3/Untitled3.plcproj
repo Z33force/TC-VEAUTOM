@@ -24,6 +24,9 @@
     <Compile Include="DUTs\E_MotorStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\E_PalletStackerStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Interfaces\I_GesimuleerdDI.TcIO">
       <SubType>Code</SubType>
     </Compile>
@@ -55,6 +58,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB\FB_LichtSensor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB\FB_PalletStacker.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB\FB_ServoMotor.TcPOU">

@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_PalletStacker" Id="{f45694bc-ba92-48cf-a251-5a58335c5f47}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PalletStacker IMPLEMENTS I_gesimuleerdAO, I_PalletStacker
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+
+VAR CONSTANT
+	MaxPallet : UINT := 5;
+END_VAR
+
+VAR
+	Loopband : Temp_I_Loopband;
+    Pins     : Temp_I_PalletPins;
+    Lift     : I_ServoMotor;
+    AfstandSensor  : FB_AfstandSensor;
+	PalletSensorVoor : FB_LichtSensor;
+	PalletSensorAchter : FB_LichtSensor;
+
+    State    : E_PalletStackerStatus := E_PalletStackerStatus.Idle;
+    Busy     : BOOL;
+    Faulted  : BOOL;
+END_VAR
+
+//note
+//Fucntie's moeten demo functietjes worden
+// to be tested]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE State OF
+
+E_PalletStackerStatus.Idle:
+    Busy := FALSE;
+
+E_PalletStackerStatus.Collecting:
+    Conveyor.MoveIn();
+
+    IF palletsensor.SensorWaarde AND Sensors.PalletPresentRear THEN // vgm maar een output van twee lichtsensoren niet eentje voor voor eentje voor achter
+        Conveyor.Stop();
+        State := E_PalletStackerStatus.PinsBewegen;
+    END_IF
+
+E_PalletStackerStatus.PinsBewegen:
+    IF Pins.Engage() THEN
+        State := E_PalletStackerStatus.LiftBewegen;
+    END_IF
+
+E_PalletStackerStatus.LiftBewegen:
+    IF Lift.MoveUp() THEN
+        State := E_PalletStackerStatus.Omwisselen;
+    END_IF
+
+E_PalletStackerStatus.Omwisselen:
+    IF Pins.TransferDown() THEN
+        State := E_PalletStackerStatus.idle;
+        Busy := FALSE;
+    END_IF
+
+E_PalletStackerStatus.legen:
+    IF Sensors.IsChamberEmpty THEN
+        State := E_PalletStackerStatus.idle;
+        Busy := FALSE;
+    ELSE
+        Pins.Release();
+        Lift.MoveDown();
+    END_IF
+
+E_PalletStackerStatus.error:
+    Busy := FALSE;
+
+END_CASE
+]]></ST>
+    </Implementation>
+    <Method Name="CollectPallet" Id="{2e0f8c98-5db4-438b-8f55-10439f8e8dd0}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD CollectPallet : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[    IF State = E_PalletStackerStatus.idle AND NOT afstandsensor.SensorWaarde >= MaxPallet THEN
+        State := E_PalletStackerStatus.Collecting;
+        Busy := TRUE;
+        CollectPallet := TRUE;
+    ELSE
+        CollectPallet := FALSE;
+    END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="EmptyStack" Id="{4fd40552-96ad-46df-a199-16395d9dac33}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD EmptyStack
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[    IF State = E_PalletStackerStatus.Idle AND NOT afstandsensor.SensorWaarde >= MaxPallet THEN
+        State := E_PalletStackerStatus.Legen;
+        Busy := TRUE;
+        EmptyStack := TRUE;
+    ELSE
+        EmptyStack := FALSE;
+    END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{c36c0b0e-cd8a-477d-a08b-6448acad0b78}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD Reset
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="SensorWaarde" Id="{52c28f07-420d-49f0-af6f-501886b94371}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY SensorWaarde : INT
+]]></Declaration>
+      <Get Name="Get" Id="{fcf33d1b-5a0c-4f37-b627-498eaa464cce}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{23c68930-cb6e-4440-8a8f-ba7d9ea75f2a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="StackPallet" Id="{fa70ac83-9774-46ac-9ac1-602eca07dc85}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD StackPallet
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[    IF State = E_PalletStackerStatus.Idle AND NOT afstandsensor.SensorWaarde >= MaxPallet THEN
+        State := E_PalletStackerStatus.PinsBewegen;
+        Busy := TRUE;
+        StackPallet := TRUE;
+    ELSE
+        StackPallet := FALSE;
+    END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Status" Id="{e14859b8-bdcb-46ee-90ab-2c453bb336ae}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY Status : E_DeviceStatus
+]]></Declaration>
+      <Get Name="Get" Id="{1b639bff-9b85-44a6-b411-2b7bb4d069d0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{932d5590-c731-4ca1-9761-4e19a511890d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Stop" Id="{7822a5a2-83d8-4fec-8a0c-4a242b9868c0}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD Stop
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
