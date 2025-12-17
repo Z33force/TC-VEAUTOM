@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_ServoMotor" Id="{63955412-bcd3-4783-ab58-d217a713d49f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ServoMotor implements I_ServoMotor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	
+	IPositie : INT;
+	TONBeweegTimer : TON;
+	TONVariabele : BOOL;
+	MotorStatusIntern : E_MotorStatus;
+	IDoelPositie	: INT;
+	InternEnable : BOOL;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="BeweegNaarDoel" Id="{3aa19c92-d64d-4fa9-b144-f711e11a9595}">
+      <Declaration><![CDATA[METHOD PUBLIC BeweegNaarDoel
+VAR_INPUT
+
+END_VAR
+
+VAR CONSTANT
+	IMotorSnelheid : INT := 1; 
+	IMotorStopSnelheid : INT:= 5;
+END_VAR
+
+//notes
+//  status schrijven en]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TONBeweegTimer(
+    IN := InternEnable,
+    PT := T#50MS
+);
+
+IF InternEnable THEN
+	MotorStatusIntern := 1;
+    IF TONBeweegTimer.Q THEN
+        TONVariabele := TRUE;
+    END_IF
+ELSE 
+	MotorStatusIntern := 0;
+END_IF
+
+
+IF InternEnable AND TONVariabele THEN
+
+    // Move towards target position
+    IF IDoelPositie > IPositie THEN
+        IPositie := IPositie + IMotorSnelheid;
+		MotorStatusIntern := 3;
+        IF IPositie >= IDoelPositie THEN
+            IPositie := IDoelPositie;
+            TONVariabele := FALSE;
+        END_IF
+
+    ELSIF IDoelPositie < IPositie THEN
+        IPositie := IPositie - IMotorSnelheid;
+		MotorStatusIntern := 4;
+        IF IPositie <= IDoelPositie THEN
+            IPositie := IDoelPositie;
+            TONVariabele := FALSE;
+        END_IF
+
+    ELSE
+        // Already at target
+        TONVariabele := FALSE;
+    END_IF
+END_IF
+
+
+
+IF NOT InternEnable THEN
+
+    // Stop normal movement
+    TONVariabele := FALSE;
+
+    // Reset timer
+    TONBeweegTimer(IN := FALSE);
+
+    // Move position smoothly back to zero
+    IF IPositie > 0 THEN
+        IPositie := IPositie - IMotorStopSnelheid;
+
+        IF IPositie <= 0 THEN
+            IPositie := 0;
+        END_IF
+
+    ELSIF IPositie < 0 THEN
+        IPositie := IPositie + IMotorStopSnelheid;
+
+        IF IPositie >= 0 THEN
+            IPositie := 0;
+        END_IF
+    END_IF
+END_IF
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="DoelPositie" Id="{bcaa4272-0182-490b-b5c5-17ac81e472ef}">
+      <Declaration><![CDATA[PROPERTY DoelPositie : int]]></Declaration>
+      <Get Name="Get" Id="{e42b4d98-7528-4ccf-bc6d-8dd18947a815}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[doelpositie := idoelpositie;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{96a1827d-06a7-4211-a2e1-0f154c576779}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[idoelpositie := doelpositie;
+]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Enable" Id="{ce81a4dc-e68d-4ced-817d-12d70bcc0997}">
+      <Declaration><![CDATA[PROPERTY Enable : bool]]></Declaration>
+      <Get Name="Get" Id="{23006fc9-e0d1-4516-a217-ab21628f28b3}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Enable := InternEnable;
+]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{127d2ac9-0d45-4fcb-bb22-ff7dc6826e0e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[internenable:= Enable;
+]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="MotorStatus" Id="{f3515037-d7f1-4cdf-986c-5e4909665074}">
+      <Declaration><![CDATA[PROPERTY MotorStatus : E_MotorStatus]]></Declaration>
+      <Get Name="Get" Id="{27bff63a-6d8b-446e-b4a2-550c7791f64a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[MotorStatus:=  MotorStatusIntern;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b4817821-45b4-4de7-bd99-86450dd53a84}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[MotorStatusIntern := MotorStatus;
+]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Positie" Id="{3f190714-8df9-4d2a-abfe-e5a5df771a72}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY Positie : INT
+]]></Declaration>
+      <Get Name="Get" Id="{2efa94e1-195f-4ab4-81b1-0730edbf470f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[positie:= IPositie;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

@@ -3,13 +3,33 @@
   <POU Name="MAIN" Id="{e6ac291c-7969-41bd-be7a-3bbe0fc2d688}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+testvariabel2 : INT;
+StackerMotor : FB_ServoMotor();
+tester : BOOL := 0;
+
+	temp2: INT;
+	temp3: E_MotorStatus;
+	temp: INT;
+	temp4: BOOL;
+	temp5: INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//hallo!
 //HOI
+//eigen branch
+StackerMotor();
 
-//eigen branch]]></ST>
+stackermotor.BeweegNaarDoel();
+
+stackermotor.DoelPositie:= temp5;
+temp2:= stackermotor.Positie;
+temp3:= stackermotor.MotorStatus;
+stackermotor.Enable:= temp4;
+
+
+
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

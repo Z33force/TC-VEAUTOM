@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_PalletStacker" Id="{f1bf6491-f939-4a60-ac07-e60f6a94ec4e}">
+    <Declaration><![CDATA[INTERFACE I_PalletStacker
+]]></Declaration>
+    <Method Name="CollectPallet" Id="{42c406db-0f81-4711-818d-aef16ab72e5b}">
+      <Declaration><![CDATA[METHOD CollectPallet
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="EmptyStack" Id="{0ca567c3-45d2-4648-856b-671c4db26acb}">
+      <Declaration><![CDATA[METHOD EmptyStack
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Reset" Id="{252bf8bf-c662-4138-ab5c-2fc71d5a722f}">
+      <Declaration><![CDATA[METHOD Reset
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="StackPallet" Id="{0ce9402f-c1ee-4b57-83de-8b71bd4726d9}">
+      <Declaration><![CDATA[METHOD StackPallet
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Status" Id="{e47a648e-819f-4a16-8245-cbcff79a32bb}">
+      <Declaration><![CDATA[PROPERTY Status : E_DeviceStatus]]></Declaration>
+      <Get Name="Get" Id="{fefecf09-14e3-4783-945f-8b3c6f2e4eb4}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{b117357d-ebf8-4594-b05f-dcec9ef726c7}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="Stop" Id="{86ff3a8b-19d4-4d1b-8aa5-453ade1e6d14}">
+      <Declaration><![CDATA[METHOD Stop
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_GesimuleerdAI" Id="{37c3b61f-23f6-47a0-bbb9-132e2ec031f5}">
+    <Declaration><![CDATA[INTERFACE I_GesimuleerdAI
+]]></Declaration>
+    <Property Name="SensorWaarde" Id="{355f3bf6-447b-4733-9e51-49350e9b7c8f}">
+      <Declaration><![CDATA[PROPERTY SensorWaarde : int]]></Declaration>
+      <Get Name="Get" Id="{d19fda89-9ee2-4f7e-8e7b-f5f5f758b1c0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{4cdb3660-85d4-426f-987f-afd42a6688ec}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

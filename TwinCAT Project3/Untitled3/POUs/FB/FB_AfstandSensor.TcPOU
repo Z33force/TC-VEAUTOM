@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_AfstandSensor" Id="{15cf4fdc-c9f7-48c2-9531-7e024c33e696}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AfstandSensor IMPLEMENTS I_gesimuleerdAO
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="SensorWaarde" Id="{31f9ff59-3116-4f7c-b92a-04c0c9e91b35}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY SensorWaarde : INT
+]]></Declaration>
+      <Get Name="Get" Id="{cff1a2a2-3eb3-4b1f-8005-631fa573ccfe}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e3a6cffd-5cb8-4d70-9c43-fc42aff29e98}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>
