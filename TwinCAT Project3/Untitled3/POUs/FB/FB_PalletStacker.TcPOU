@@ -19,11 +19,9 @@ VAR
     Pins     : Temp_ITFPalletPins;
     Lift     : ITFServoMotor;
     AfstandSensor  : FB_AfstandSensor;
-	PalletSensorVoor : FB_LichtSensor;
-	PalletSensorAchter : FB_LichtSensor;
+	PalletSensor : FB_LichtSensor;
 
     State    : E_PalletStackerStatus := E_PalletStackerStatus.Idle;
-    Busy     : BOOL;
     Faulted  : BOOL;
 	
 	EBufferStatus : E_BufferStatus := 0;
@@ -33,61 +31,67 @@ END_VAR
 //note
 //Fucntie's moeten demo functietjes worden
 // to be tested
-// lift logica kan ik al regelen en de basis functionaliteit]]></Declaration>
+// lift logica kan ik al regelen en de basis functionaliteit
+// toevoegen van errors, alarms, en safety]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Check als de buffer vol zit
 IF AfstandSensor.SensorWaarde >= MaxPalletSensor THEN
 	EBufferStatus:= E_BufferStatus.vol;
 ELSIF AfstandSensor.SensorWaarde = MaxPalletSensor - 2 * pallethoogte AND maxpalletsensor > 2 *pallethoogte + platformhoogte THEN
 	EBufferStatus:= E_BufferStatus.BijnaVol;
-	
 ELSIF afstandsensor.SensorWaarde >= platformhoogte + pallethoogte THEN	
 	EBufferStatus := E_BufferStatus.DeelsGevuld;
-	
 ELSE
 	EBufferStatus := E_BufferStatus.Leeg;	
 END_IF
 
+
 CASE State OF
 
-E_PalletStackerStatus.Idle:
-    Busy := FALSE;
-
+//E_PalletStackerStatus.Idle:
 E_PalletStackerStatus.Collecting: // evt veranderen in een method in de loopband controller zelf, implements band naam palletstacker conveyor
     Loopband.Beweeg();
-    IF palletsensorvoor.SensorWaarde AND palletsensorachter.sensorwaarde THEN // vgm maar een output van twee lichtsensoren niet eentje voor voor eentje voor achter
+    IF palletsensor.SensorWaarde THEN // vgm maar een output van twee lichtsensoren niet eentje voor voor eentje voor achter
         Loopband.Stop();
+		
+		// als de pins al laag zijn anders moeten ze eerst omlaag gaan. call of deze functie of transfer
         State := E_PalletStackerStatus.PinsBewegen;
     END_IF
 
 E_PalletStackerStatus.PinsBewegen:
-    IF Pins.ErinBewegen() THEN
+    IF Pins.ErinBewegen() THEN // return true als de functie klaar is of eventueel een andere waarde.
         State := E_PalletStackerStatus.LiftBewegen;
     END_IF
 
 E_PalletStackerStatus.LiftBewegen:
 	lift.Enable:= 1;
+	lift.DoelPositie:= lift.DoelPositie + pallethoogte; // geef een waarde mee deze moet nog bepaald worden
     IF Lift.positie = lift.DoelPositie THEN
+		lift.Enable:= 0;
         State := E_PalletStackerStatus.Omwisselen;
     END_IF
 
 E_PalletStackerStatus.Omwisselen:
-    IF Pins.Beweegpinsnaarbeneden() THEN
-        State := E_PalletStackerStatus.idle;
-        Busy := FALSE;
-    END_IF
+	lift.DoelPositie:= lift.DoelPositie - pallethoogte;
+	lift.Enable := 1;
+	IF Lift.positie = lift.DoelPositie THEN
+		lift.Enable:= 0;
+		State := E_PalletStackerStatus.idle;
+	END_IF;
 
 E_PalletStackerStatus.legen:
     IF EBufferStatus = E_BufferStatus.Leeg THEN
         State := E_PalletStackerStatus.idle;
-        Busy := FALSE;
     ELSE
-        Pins.eruitbewegen();
-        Lift.doelpositie; //omlaag bewegen
+		lift.DoelPositie:= 0;
+		lift.Enable:= 1; //evt alleen enablen als het echt nodig is 
+		IF lift.DoelPositie:= lift.Positie THEN
+			lift.Enable:= 0;
+			Pins.eruitbewegen();
+		END_IF
     END_IF
 
-E_PalletStackerStatus.error:
-    Busy := FALSE;
+//E_PalletStackerStatus.error:
 
 END_CASE
 ]]></ST>
@@ -99,7 +103,6 @@ METHOD CollectPallet : bool
       <Implementation>
         <ST><![CDATA[    IF State = E_PalletStackerStatus.idle AND NOT afstandsensor.SensorWaarde >= MaxPallet THEN
         State := E_PalletStackerStatus.Collecting;
-        Busy := TRUE;
         CollectPallet := TRUE;
     ELSE
         CollectPallet := FALSE;
@@ -113,7 +116,6 @@ METHOD EmptyStack
       <Implementation>
         <ST><![CDATA[    IF State = E_PalletStackerStatus.Idle AND NOT afstandsensor.SensorWaarde >= MaxPallet THEN
         State := E_PalletStackerStatus.Legen;
-        Busy := TRUE;
         EmptyStack := TRUE;
     ELSE
         EmptyStack := FALSE;
@@ -156,7 +158,6 @@ METHOD StackPallet
       <Implementation>
         <ST><![CDATA[    IF State = E_PalletStackerStatus.Idle AND NOT afstandsensor.SensorWaarde >= MaxPallet THEN
         State := E_PalletStackerStatus.PinsBewegen;
-        Busy := TRUE;
         StackPallet := TRUE;
     ELSE
         StackPallet := FALSE;
