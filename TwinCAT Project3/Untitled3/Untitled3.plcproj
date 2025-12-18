@@ -18,6 +18,9 @@
     <LibraryReferences>{15624de6-a98d-4212-abae-3c1753f86e6c}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\E_BufferStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\E_DeviceStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -27,28 +30,28 @@
     <Compile Include="DUTs\E_PalletStackerStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\I_GesimuleerdDI.TcIO">
+    <Compile Include="Interfaces\ITFGesimuleerdDI.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\I_GesimuleerdDO.TcIO">
+    <Compile Include="Interfaces\ITFGesimuleerdDO.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\I_GesimuleerdAI.TcIO">
+    <Compile Include="Interfaces\ITFGesimuleerdAI.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\I_GesimuleerdAO.TcIO">
+    <Compile Include="Interfaces\ITFGesimuleerdAO.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\I_PalletStacker.TcIO">
+    <Compile Include="Interfaces\ITFPalletStacker.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\I_ServoMotor.TcIO">
+    <Compile Include="Interfaces\ITFServoMotor.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\Temp_I_Loopband.TcIO">
+    <Compile Include="Interfaces\Temp_ITFLoopband.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\Temp_I_PalletPins.TcIO">
+    <Compile Include="Interfaces\Temp_ITFPalletPins.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask.TcTTO">

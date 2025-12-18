@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_ServoMotor" Id="{63955412-bcd3-4783-ab58-d217a713d49f}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_ServoMotor implements I_ServoMotor
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ServoMotor implements ITFServoMotor
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
@@ -10,10 +10,10 @@ VAR
 	
 	IPositie : INT;
 	TONBeweegTimer : TON;
-	TONVariabele : BOOL;
-	MotorStatusIntern : E_MotorStatus;
+	BTONVariabele : BOOL;
+	EMotorStatusIntern : E_MotorStatus;
 	IDoelPositie	: INT;
-	InternEnable : BOOL;
+	BInternEnable : BOOL;
 	
 END_VAR
 ]]></Declaration>
@@ -35,51 +35,51 @@ END_VAR
 //  status schrijven en]]></Declaration>
       <Implementation>
         <ST><![CDATA[TONBeweegTimer(
-    IN := InternEnable,
+    IN := BInternEnable,
     PT := T#50MS
 );
 
-IF InternEnable THEN
-	MotorStatusIntern := 1;
+IF BInternEnable THEN
+	EMotorStatusIntern := 1;
     IF TONBeweegTimer.Q THEN
-        TONVariabele := TRUE;
+        BTONVariabele := TRUE;
     END_IF
 ELSE 
-	MotorStatusIntern := 0;
+	EMotorStatusIntern := 0;
 END_IF
 
 
-IF InternEnable AND TONVariabele THEN
+IF BInternEnable AND BTONVariabele THEN
 
     // Move towards target position
     IF IDoelPositie > IPositie THEN
         IPositie := IPositie + IMotorSnelheid;
-		MotorStatusIntern := 3;
+		EMotorStatusIntern := 3;
         IF IPositie >= IDoelPositie THEN
             IPositie := IDoelPositie;
-            TONVariabele := FALSE;
+            BTONVariabele := FALSE;
         END_IF
 
     ELSIF IDoelPositie < IPositie THEN
         IPositie := IPositie - IMotorSnelheid;
-		MotorStatusIntern := 4;
+		EMotorStatusIntern := 4;
         IF IPositie <= IDoelPositie THEN
             IPositie := IDoelPositie;
-            TONVariabele := FALSE;
+            BTONVariabele := FALSE;
         END_IF
 
     ELSE
         // Already at target
-        TONVariabele := FALSE;
+        BTONVariabele := FALSE;
     END_IF
 END_IF
 
 
 
-IF NOT InternEnable THEN
+IF NOT BInternEnable THEN
 
     // Stop normal movement
-    TONVariabele := FALSE;
+    BTONVariabele := FALSE;
 
     // Reset timer
     TONBeweegTimer(IN := FALSE);
@@ -132,7 +132,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[Enable := InternEnable;
+          <ST><![CDATA[Enable := BInternEnable;
 ]]></ST>
         </Implementation>
       </Get>
@@ -141,7 +141,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[internenable:= Enable;
+          <ST><![CDATA[BInternEnable:= Enable;
 ]]></ST>
         </Implementation>
       </Set>
@@ -153,7 +153,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[MotorStatus:=  MotorStatusIntern;]]></ST>
+          <ST><![CDATA[MotorStatus:=  EMotorStatusIntern;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{b4817821-45b4-4de7-bd99-86450dd53a84}">
@@ -161,14 +161,13 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[MotorStatusIntern := MotorStatus;
+          <ST><![CDATA[EMotorStatusIntern := MotorStatus;
 ]]></ST>
         </Implementation>
       </Set>
     </Property>
     <Property Name="Positie" Id="{3f190714-8df9-4d2a-abfe-e5a5df771a72}">
-      <Declaration><![CDATA[{warning 'Add property implementation'}
-PROPERTY Positie : INT
+      <Declaration><![CDATA[PROPERTY Positie : INT
 ]]></Declaration>
       <Get Name="Get" Id="{2efa94e1-195f-4ab4-81b1-0730edbf470f}">
         <Declaration><![CDATA[VAR

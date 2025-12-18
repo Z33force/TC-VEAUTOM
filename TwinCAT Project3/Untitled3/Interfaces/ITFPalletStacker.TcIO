@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <Itf Name="I_PalletStacker" Id="{f1bf6491-f939-4a60-ac07-e60f6a94ec4e}">
-    <Declaration><![CDATA[INTERFACE I_PalletStacker
+  <Itf Name="ITFPalletStacker" Id="{f1bf6491-f939-4a60-ac07-e60f6a94ec4e}">
+    <Declaration><![CDATA[INTERFACE ITFPalletStacker
 ]]></Declaration>
     <Method Name="CollectPallet" Id="{42c406db-0f81-4711-818d-aef16ab72e5b}">
       <Declaration><![CDATA[METHOD CollectPallet

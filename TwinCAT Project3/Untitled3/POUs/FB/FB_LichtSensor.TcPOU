@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_LichtSensor" Id="{2a2763db-7b58-400d-b689-256626899efb}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_LichtSensor IMPLEMENTS I_gesimuleerdDO
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LichtSensor IMPLEMENTS ITFGesimuleerdDO
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	BHmiPalletSensorSim : BOOL;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -21,7 +23,7 @@ PROPERTY SensorWaarde : BOOL
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[BHmiPalletSensorSim:= SensorWaarde;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{b3401fe1-3921-4ebe-bc43-cea8512b372a}">
@@ -29,7 +31,8 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[SensorWaarde := BHmiPalletSensorSim;
+]]></ST>
         </Implementation>
       </Set>
     </Property>

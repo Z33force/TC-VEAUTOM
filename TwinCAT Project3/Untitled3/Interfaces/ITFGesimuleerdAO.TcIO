@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <Itf Name="I_GesimuleerdAO" Id="{226360d6-bab2-4a87-8d8f-b6f553092b9e}">
-    <Declaration><![CDATA[INTERFACE I_GesimuleerdAO
+  <Itf Name="ITFGesimuleerdAO" Id="{226360d6-bab2-4a87-8d8f-b6f553092b9e}">
+    <Declaration><![CDATA[INTERFACE ITFGesimuleerdAO
 ]]></Declaration>
     <Property Name="SensorWaarde" Id="{b9bb470e-cd44-4777-ac5d-a8bc14a96ec4}">
       <Declaration><![CDATA[PROPERTY SensorWaarde : int]]></Declaration>

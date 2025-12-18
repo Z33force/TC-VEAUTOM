@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_PalletStacker" Id="{f45694bc-ba92-48cf-a251-5a58335c5f47}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_PalletStacker IMPLEMENTS I_gesimuleerdAO, I_PalletStacker
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PalletStacker IMPLEMENTS ITFGesimuleerdAO, ITFPalletStacker
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
@@ -9,12 +9,15 @@ END_VAR
 
 VAR CONSTANT
 	MaxPallet : UINT := 5;
+	MaxPalletSensor : UINT:= maxpallet * pallethoogte + platformhoogte;
+	pallethoogte : UINT := 20;
+	platformhoogte : UINT := 15;
 END_VAR
 
 VAR
-	Loopband : Temp_I_Loopband;
-    Pins     : Temp_I_PalletPins;
-    Lift     : I_ServoMotor;
+	Loopband : Temp_ITFLoopband;
+    Pins     : Temp_ITFPalletPins;
+    Lift     : ITFServoMotor;
     AfstandSensor  : FB_AfstandSensor;
 	PalletSensorVoor : FB_LichtSensor;
 	PalletSensorAchter : FB_LichtSensor;
@@ -22,48 +25,65 @@ VAR
     State    : E_PalletStackerStatus := E_PalletStackerStatus.Idle;
     Busy     : BOOL;
     Faulted  : BOOL;
+	
+	EBufferStatus : E_BufferStatus := 0;
+	
 END_VAR
 
 //note
 //Fucntie's moeten demo functietjes worden
-// to be tested]]></Declaration>
+// to be tested
+// lift logica kan ik al regelen en de basis functionaliteit]]></Declaration>
     <Implementation>
-      <ST><![CDATA[CASE State OF
+      <ST><![CDATA[//Check als de buffer vol zit
+IF AfstandSensor.SensorWaarde >= MaxPalletSensor THEN
+	EBufferStatus:= E_BufferStatus.vol;
+ELSIF AfstandSensor.SensorWaarde = MaxPalletSensor - 2 * pallethoogte AND maxpalletsensor > 2 *pallethoogte + platformhoogte THEN
+	EBufferStatus:= E_BufferStatus.BijnaVol;
+	
+ELSIF afstandsensor.SensorWaarde >= platformhoogte + pallethoogte THEN	
+	EBufferStatus := E_BufferStatus.DeelsGevuld;
+	
+ELSE
+	EBufferStatus := E_BufferStatus.Leeg;	
+END_IF
+
+CASE State OF
 
 E_PalletStackerStatus.Idle:
     Busy := FALSE;
 
-E_PalletStackerStatus.Collecting:
-    Conveyor.MoveIn();
-
-    IF palletsensor.SensorWaarde AND Sensors.PalletPresentRear THEN // vgm maar een output van twee lichtsensoren niet eentje voor voor eentje voor achter
-        Conveyor.Stop();
+E_PalletStackerStatus.Collecting: // evt veranderen in een method in de loopband controller zelf, implements band naam palletstacker conveyor
+    Loopband.Beweeg();
+    IF palletsensorvoor.SensorWaarde AND palletsensorachter.sensorwaarde THEN // vgm maar een output van twee lichtsensoren niet eentje voor voor eentje voor achter
+        Loopband.Stop();
         State := E_PalletStackerStatus.PinsBewegen;
     END_IF
 
 E_PalletStackerStatus.PinsBewegen:
-    IF Pins.Engage() THEN
+    IF Pins.ErinBewegen() THEN
         State := E_PalletStackerStatus.LiftBewegen;
     END_IF
 
 E_PalletStackerStatus.LiftBewegen:
-    IF Lift.MoveUp() THEN
+	lift.Enable:= 1;
+    IF Lift.positie = lift.DoelPositie THEN
         State := E_PalletStackerStatus.Omwisselen;
     END_IF
 
 E_PalletStackerStatus.Omwisselen:
-    IF Pins.TransferDown() THEN
+    IF Pins.Beweegpinsnaarbeneden() THEN
         State := E_PalletStackerStatus.idle;
         Busy := FALSE;
     END_IF
 
 E_PalletStackerStatus.legen:
-    IF Sensors.IsChamberEmpty THEN
+    IF EBufferStatus = E_BufferStatus.Leeg THEN
         State := E_PalletStackerStatus.idle;
         Busy := FALSE;
     ELSE
-        Pins.Release();
-        Lift.MoveDown();
+        Pins.eruitbewegen();
+        Lift.doelpositie; //omlaag bewegen
     END_IF
 
 E_PalletStackerStatus.error:

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <Itf Name="Temp_I_PalletPins" Id="{b3648339-c988-4d5f-97cd-8a7fdd9c6865}">
-    <Declaration><![CDATA[INTERFACE Temp_I_PalletPins
+  <Itf Name="Temp_ITFPalletPins" Id="{b3648339-c988-4d5f-97cd-8a7fdd9c6865}">
+    <Declaration><![CDATA[INTERFACE Temp_ITFPalletPins
 ]]></Declaration>
     <Method Name="Beweegpinsnaarbeneden" Id="{82450bbc-49b3-4bf2-b6bf-e632ecb152d1}">
       <Declaration><![CDATA[METHOD Beweegpinsnaarbeneden

@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <Itf Name="I_ServoMotor" Id="{c243c482-42c3-4a76-81f1-ac3a4417e219}">
-    <Declaration><![CDATA[INTERFACE I_ServoMotor
+  <Itf Name="ITFServoMotor" Id="{c243c482-42c3-4a76-81f1-ac3a4417e219}">
+    <Declaration><![CDATA[INTERFACE ITFServoMotor
 ]]></Declaration>
     <Method Name="BeweegNaarDoel" Id="{4f8b0714-7117-4f8d-913a-bddf18ac46d8}">
       <Declaration><![CDATA[METHOD BeweegNaarDoel
 VAR_INPUT
-IDoelPositie : INT;
 END_VAR
 ]]></Declaration>
     </Method>
