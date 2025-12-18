@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="Buffer" Id="{f5a9d24e-3f9b-4256-a349-b204b10fe1cf}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK Buffer Implements OpenDichtSchuif
+    <Declaration><![CDATA[FUNCTION_BLOCK Buffer Implements ITFOpenDichtSchuif
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
@@ -12,5 +12,33 @@ END_VAR
     <Implementation>
       <ST><![CDATA[// gebruikt lopendeband ]]></ST>
     </Implementation>
+    <Method Name="Band1Aan" Id="{33078414-ff57-4594-a7f1-e3b4254d2ea7}">
+      <Declaration><![CDATA[METHOD Band1Aan
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="BufferStatus" Id="{e0671077-caca-40ca-9ba3-7ec4b2001002}">
+      <Declaration><![CDATA[PROPERTY BufferStatus : EBufferStatus]]></Declaration>
+      <Get Name="Get" Id="{185e581b-44bf-4716-b58a-2337700840eb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{c8a9bb1d-8794-42e1-8cab-64670a990941}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
   </POU>
 </TcPlcObject>

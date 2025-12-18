@@ -18,6 +18,9 @@
     <LibraryReferences>{15624de6-a98d-4212-abae-3c1753f86e6c}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\EBufferStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\ELopendeBandStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -33,13 +36,16 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\interfaces\Motor.TcIO">
+    <Compile Include="POUs\interfaces\ITFLopendeBand.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\interfaces\NoodStop.TcIO">
+    <Compile Include="POUs\interfaces\ITFMotor.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\interfaces\OpenDichtSchuif.TcIO">
+    <Compile Include="POUs\interfaces\ITFNoodStop.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\interfaces\ITFOpenDichtSchuif.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">

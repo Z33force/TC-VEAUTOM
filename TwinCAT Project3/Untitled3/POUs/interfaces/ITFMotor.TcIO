@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <Itf Name="Motor" Id="{d3f47777-bd5b-48b1-bdcb-ea49bd88495e}">
-    <Declaration><![CDATA[INTERFACE Motor
+  <Itf Name="ITFMotor" Id="{d3f47777-bd5b-48b1-bdcb-ea49bd88495e}">
+    <Declaration><![CDATA[INTERFACE ITFMotor
 ]]></Declaration>
     <Method Name="Aan" Id="{060d63f9-787c-496d-9022-28764b8b1e72}">
       <Declaration><![CDATA[METHOD Aan

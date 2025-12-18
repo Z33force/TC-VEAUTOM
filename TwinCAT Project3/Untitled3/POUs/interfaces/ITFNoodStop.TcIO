@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="ITFNoodStop" Id="{2c1ec3b4-449e-49d5-a307-daafec2f6710}">
+    <Declaration><![CDATA[INTERFACE ITFNoodStop
+]]></Declaration>
+  </Itf>
+</TcPlcObject>

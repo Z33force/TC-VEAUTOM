@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="ITFLopendeBand" Id="{9d368c46-730b-40f0-8730-d7cbd8e44a65}">
+    <Declaration><![CDATA[INTERFACE ITFLopendeBand
+]]></Declaration>
+  </Itf>
+</TcPlcObject>
