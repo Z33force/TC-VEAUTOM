@@ -7,7 +7,10 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//hallo!
-//HOI]]></ST>
+//HOI
+//cansin_gay
+
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
