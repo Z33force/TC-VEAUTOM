@@ -15,5 +15,14 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
+    <Property Name="OpenDichtSchuifStatus" Id="{a434d457-9ef9-4311-be43-68dd2d55a58a}">
+      <Declaration><![CDATA[PROPERTY OpenDichtSchuifStatus : EOpenDichtSchuifStatus]]></Declaration>
+      <Get Name="Get" Id="{79ff863a-dd76-472a-912f-5e294bc5da9b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{2568d9c7-aa37-41ad-8152-af3ce461868c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
   </Itf>
 </TcPlcObject>

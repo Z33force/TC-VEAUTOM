@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="EOpenDichtSchuifStatus" Id="{b27e2423-1a92-4315-b13f-123432824bdf}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE EOpenDichtSchuifStatus :
+(
+	Open := 0,
+	Dicht,
+	Error,
+	Openen,
+	Sluiten
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
