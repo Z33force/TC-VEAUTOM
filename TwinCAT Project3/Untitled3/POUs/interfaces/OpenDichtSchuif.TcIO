@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="OpenDichtSchuif" Id="{0e02246c-75de-4a4d-9082-21ffa56f144a}">
+    <Declaration><![CDATA[INTERFACE OpenDichtSchuif
+]]></Declaration>
+    <Method Name="Dicht" Id="{2967d8ea-a688-47a5-9d7b-f47d16a1b381}">
+      <Declaration><![CDATA[METHOD Dicht
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Open" Id="{5ebdbeb3-8def-43b4-9074-589eceb818f8}">
+      <Declaration><![CDATA[METHOD Open
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>
