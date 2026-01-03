@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Zuignap" Id="{191d7326-8cba-44a7-9ca1-4fe1afaa2bff}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Zuignap
+
+VAR_INPUT
+    EnableCmd     : BOOL;
+    StartCmd      : BOOL;
+    AbortCmd      : BOOL;
+    SafetyOk      : BOOL;
+    HomeOk        : BOOL;
+    SheetPresent  : BOOL;
+    VacuumOk      : BOOL;
+    PlaceFree     : BOOL;
+    PusherClear   : BOOL;
+END_VAR
+
+VAR_OUTPUT
+    DO_Down       : BOOL;
+    DO_Up         : BOOL;
+    DO_Vacuum     : BOOL;
+    DO_BlowOff    : BOOL;
+    State         : E_UnitState;
+    Error         : E_UnitError;
+END_VAR
+
+VAR
+    Step          : INT := 0;
+    Tmr           : TON;
+    tVacTimeout   : TIME := T#2s;
+    tMoveTimeout  : TIME := T#3s;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// reset outputs
+DO_Down := FALSE;
+DO_Up := FALSE;
+DO_Vacuum := FALSE;
+DO_BlowOff := FALSE;
+
+// enable check
+IF NOT EnableCmd THEN
+    State := E_UnitState.Disabled;
+    RETURN;
+END_IF
+
+// safety
+IF NOT SafetyOk THEN
+    Error := E_UnitError.SafetyNotOk;
+    State := E_UnitState.Error;
+END_IF
+
+// abort
+IF AbortCmd THEN
+    State := E_UnitState.Aborted;
+    Step := 0;
+    RETURN;
+END_IF
+
+CASE State OF
+
+    E_UnitState.Disabled:
+        State := E_UnitState.Idle;
+
+    E_UnitState.Idle:
+        IF NOT HomeOk THEN
+            Error := E_UnitError.NotHomed;
+            State := E_UnitState.Error;
+        ELSE
+            State := E_UnitState.Ready;
+        END_IF
+
+    E_UnitState.Ready:
+        IF StartCmd THEN
+            IF NOT SheetPresent THEN
+                State := E_UnitState.Done;
+            ELSIF PlaceFree AND PusherClear THEN
+                Step := 10;
+                State := E_UnitState.Running;
+            END_IF
+        END_IF
+
+    E_UnitState.Running:
+        CASE Step OF
+
+            10: // naar beneden + vacuum
+                DO_Down := TRUE;
+                DO_Vacuum := TRUE;
+                Tmr(IN := TRUE, PT := tVacTimeout);
+
+                IF VacuumOk THEN
+                    Tmr(IN := FALSE);
+                    Step := 20;
+                ELSIF Tmr.Q THEN
+                    Error := E_UnitError.VacuumNotOk;
+                    State := E_UnitState.Error;
+                END_IF
+
+            20: // omhoog
+                DO_Up := TRUE;
+                DO_Vacuum := TRUE;
+                Tmr(IN := TRUE, PT := tMoveTimeout);
+
+                IF Tmr.Q THEN
+                    Tmr(IN := FALSE);
+                    Step := 30;
+                END_IF
+
+            30: // loslaten
+                DO_Vacuum := FALSE;
+                DO_BlowOff := TRUE;
+                Tmr(IN := TRUE, PT := T#300ms);
+
+                IF Tmr.Q THEN
+                    Tmr(IN := FALSE);
+                    Step := 0;
+                    State := E_UnitState.Done;
+                END_IF
+        END_CASE
+
+    E_UnitState.Done:
+        State := E_UnitState.Ready;
+
+    E_UnitState.Error, E_UnitState.Aborted:
+        // alles uit
+
+END_CASE
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

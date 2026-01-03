@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Pusher" Id="{9d4fd5db-79ab-4c50-a077-8f0c0e6b043c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Pusher
+
+VAR_INPUT
+    EnableCmd     : BOOL;
+    StartCmd      : BOOL;
+    AbortCmd      : BOOL;
+    SafetyOk      : BOOL;
+    HomeOk        : BOOL;
+    PosRetracted  : BOOL;
+    PosExtended   : BOOL;
+    BeltFree      : BOOL;
+END_VAR
+
+VAR_OUTPUT
+    DO_Extend     : BOOL;
+    DO_Retract    : BOOL;
+    State         : E_UnitState;
+    Error         : E_UnitError;
+END_VAR
+
+VAR
+    Step          : INT := 0;
+    Tmr           : TON;
+
+    tMoveTimeout  : TIME := T#3s;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// reset outputs
+DO_Extend := FALSE;
+DO_Retract := FALSE;
+
+// enable check
+IF NOT EnableCmd THEN
+    State := E_UnitState.Disabled;
+    RETURN;
+END_IF
+
+// safety
+IF NOT SafetyOk THEN
+    Error := E_UnitError.SafetyNotOk;
+    State := E_UnitState.Error;
+END_IF
+
+// abort
+IF AbortCmd THEN
+    State := E_UnitState.Aborted;
+    Step := 0;
+    RETURN;
+END_IF
+
+CASE State OF
+
+    E_UnitState.Disabled:
+        State := E_UnitState.Idle;
+
+    E_UnitState.Idle:
+        IF NOT HomeOk THEN
+            Error := E_UnitError.NotHomed;
+            State := E_UnitState.Error;
+        ELSE
+            State := E_UnitState.Ready;
+        END_IF
+
+    E_UnitState.Ready:
+        IF StartCmd AND BeltFree THEN
+            Step := 10;
+            State := E_UnitState.Running;
+        END_IF
+
+    E_UnitState.Running:
+        CASE Step OF
+
+            10: // extend
+                DO_Extend := TRUE;
+                Tmr(IN := TRUE, PT := tMoveTimeout);
+
+                IF PosExtended THEN
+                    Tmr(IN := FALSE);
+                    Step := 20;
+                END_IF
+
+            20: // retract
+                DO_Retract := TRUE;
+                Tmr(IN := TRUE, PT := tMoveTimeout);
+
+                IF PosRetracted THEN
+                    Tmr(IN := FALSE);
+                    Step := 0;
+                    State := E_UnitState.Done;
+                END_IF
+        END_CASE
+
+    E_UnitState.Done:
+        State := E_UnitState.Ready;
+
+    E_UnitState.Error, E_UnitState.Aborted:
+        // alles uit
+
+END_CASE
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
