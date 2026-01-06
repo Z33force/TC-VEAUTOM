@@ -67,5 +67,24 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
+    <Property Name="ObjectOpBand" Id="{bbeb389b-d910-422d-97b6-1dd34e17a1cb}">
+      <Declaration><![CDATA[PROPERTY ObjectOpBand : BOOL]]></Declaration>
+      <Get Name="Get" Id="{09a964e5-3abf-4a81-b57b-d000f6cdc2c1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{1a105312-aa7b-4c17-8eef-1afbd3ca9ddd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
   </POU>
 </TcPlcObject>

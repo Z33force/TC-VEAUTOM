@@ -7,20 +7,51 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	Band1 : LopendeBand;
+	Band2 : LopendeBand;
+	Band3 : LopendeBand;
+	Band4 : LopendeBand;
+	Band5 : LopendeBand;
+	Band5Ready: BOOL;
+	Band4Ready: BOOL;
+	Band3Ready: BOOL;
+	Band2Ready: BOOL;
+	Band1Ready: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// gebruikt lopendeband ]]></ST>
+      <ST><![CDATA[// gebruikt lopendeband 
+IF Band5.ObjectOpBand = TRUE AND liftnietready THEN // stop band 5 wanneer er iets op zit maar de lift niet ready is 
+	;
+ELSE // band 4 en 5 aan
+	Band5Ready := TRUE;
+END_IF
+
+IF band4.ObjectOpBand = TRUE AND band5ready = TRUE THEN
+	;
+ELSE
+	Band4Ready := TRUE;
+END_IF
+
+IF band3.ObjectOpBand = TRUE AND band5ready = TRUE THEN
+	;
+ELSE
+	Band3Ready := TRUE;
+END_IF
+
+IF band2.ObjectOpBand = TRUE AND band5ready = TRUE THEN
+	;
+ELSE
+	Band2Ready := TRUE;
+END_IF
+
+IF band1.ObjectOpBand = TRUE AND band5ready = TRUE THEN
+	;
+ELSE
+	Band1Ready := TRUE;
+END_IF
+]]></ST>
     </Implementation>
-    <Method Name="Band1Aan" Id="{33078414-ff57-4594-a7f1-e3b4254d2ea7}">
-      <Declaration><![CDATA[METHOD Band1Aan
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
-      </Implementation>
-    </Method>
     <Property Name="BufferStatus" Id="{e0671077-caca-40ca-9ba3-7ec4b2001002}">
       <Declaration><![CDATA[PROPERTY BufferStatus : EBufferStatus]]></Declaration>
       <Get Name="Get" Id="{185e581b-44bf-4716-b58a-2337700840eb}">
