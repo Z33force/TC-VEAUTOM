@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="Buffer" Id="{f5a9d24e-3f9b-4256-a349-b204b10fe1cf}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK Buffer Implements ITFOpenDichtSchuif
+    <Declaration><![CDATA[FUNCTION_BLOCK Buffer IMPLEMENTS ITFOpenDichtSchuif, ITFLopendeband
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
@@ -25,6 +25,8 @@ IF Band5.ObjectOpBand = TRUE AND liftnietready THEN // stop band 5 wanneer er ie
 	;
 ELSE // band 4 en 5 aan
 	Band5Ready := TRUE;
+	band5.Aan := TRUE;
+	
 END_IF
 
 IF band4.ObjectOpBand = TRUE AND band5ready = TRUE THEN
@@ -33,19 +35,19 @@ ELSE
 	Band4Ready := TRUE;
 END_IF
 
-IF band3.ObjectOpBand = TRUE AND band5ready = TRUE THEN
+IF band3.ObjectOpBand = TRUE AND band4ready = TRUE THEN
 	;
 ELSE
 	Band3Ready := TRUE;
 END_IF
 
-IF band2.ObjectOpBand = TRUE AND band5ready = TRUE THEN
+IF band2.ObjectOpBand = TRUE AND band3ready = TRUE THEN
 	;
 ELSE
 	Band2Ready := TRUE;
 END_IF
 
-IF band1.ObjectOpBand = TRUE AND band5ready = TRUE THEN
+IF band1.ObjectOpBand = TRUE AND band2ready = TRUE THEN
 	;
 ELSE
 	Band1Ready := TRUE;

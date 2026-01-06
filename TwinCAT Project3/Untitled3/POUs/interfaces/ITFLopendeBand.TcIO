@@ -3,5 +3,17 @@
   <Itf Name="ITFLopendeBand" Id="{9d368c46-730b-40f0-8730-d7cbd8e44a65}">
     <Declaration><![CDATA[INTERFACE ITFLopendeBand
 ]]></Declaration>
+    <Method Name="start" Id="{366c1094-83f1-494e-91cb-c4ec7b9c8878}">
+      <Declaration><![CDATA[METHOD start
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="stop" Id="{9c625508-1ec2-4ff1-a58f-5f00807ec53f}">
+      <Declaration><![CDATA[METHOD stop
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
   </Itf>
 </TcPlcObject>

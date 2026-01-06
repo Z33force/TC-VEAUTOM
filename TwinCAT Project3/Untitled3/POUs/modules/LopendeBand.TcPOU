@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="LopendeBand" Id="{af1489a2-4b96-41ec-9023-dbc3371340a0}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK LopendeBand implements ITFMotor
+    <Declaration><![CDATA[FUNCTION_BLOCK LopendeBand implements ITFMotor, ITFLopendeBand
 VAR_INPUT
+	Aan: BOOL;
 END_VAR
 VAR_OUTPUT
 END_VAR
