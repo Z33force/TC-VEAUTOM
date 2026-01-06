@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.19">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.20">
 	<Project ProjectGUID="{FDF2B5DD-7595-4E8C-8F0A-D18522C5C2C3}" TargetNetId="199.4.42.250.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
-			<Settings MaxCpus="12">
+			<Settings MaxCpus="64" NonWinCpus="52">
 				<Cpu CpuId="11"/>
 			</Settings>
 			<Licenses>
@@ -18,7 +18,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{5E8BF161-BFB5-4A70-B292-7A8F84063DE5}" Name="Untitled3" PrjFilePath="Untitled3\Untitled3.plcproj" TmcFilePath="Untitled3\Untitled3.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{742A919C-FAAA-825B-8A2D-B2EFAB77C58E}" TmcPath="Untitled3\Untitled3.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{4CAD30E9-65F5-DBEA-0757-B26FFC1B0227}" TmcPath="Untitled3\Untitled3.tmc">
 					<Name>Untitled3 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>

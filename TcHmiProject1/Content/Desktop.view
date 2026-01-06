@@ -1,0 +1,23 @@
+<div id="Desktop" data-tchmi-type="TcHmi.Controls.System.TcHmiView" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width-mode="Content" data-tchmi-min-width="100" data-tchmi-min-width-unit="%" data-tchmi-height-mode="Content" data-tchmi-min-height="100" data-tchmi-min-height-unit="%">
+  <div id="TcHmiNavigation_1" data-tchmi-type="TcHmi.Controls.BaseTemplate.TcHmiNavigation" data-tchmi-height="84" data-tchmi-height-unit="px" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="506" data-tchmi-top-unit="px" data-tchmi-width="770" data-tchmi-width-unit="px" data-tchmi-navigation-orientation="Horizontal" data-tchmi-show-breadcrumb="True" data-tchmi-show-back-button="False" data-tchmi-scrollbar-style="None">
+
+<script data-tchmi-target-attribute="data-tchmi-navigation-structure" type="application/json">
+[
+  {
+    "content": "Content/Startpage.content",
+    "name": "Home"
+  },
+  {
+    "content": "Content/Content1.content",
+    "name": "Palletizer"
+  },
+  {
+    "content": "Content/Simu1.content",
+    "name": "Simulation"
+  }
+]
+</script>
+</div>
+<div id="TcHmiRegion_1" data-tchmi-type="TcHmi.Controls.System.TcHmiRegion" data-tchmi-height="470" data-tchmi-height-unit="px" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="17" data-tchmi-top-unit="px" data-tchmi-width="770" data-tchmi-width-unit="px" data-tchmi-target-content="Content/Startpage.content">
+</div>
+</div>
