@@ -1,14 +1,16 @@
-<div id="Simu1" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="800" data-tchmi-height="640">
+<div id="Simu1" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="980" data-tchmi-height="680">
 
-<div id="TcHmiCheckbox_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="659" data-tchmi-left-unit="px" data-tchmi-text="pin engaged" data-tchmi-top="222" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px">
-</div>
 <div id="TcHmiCheckbox_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="659" data-tchmi-left-unit="px" data-tchmi-text="Pin error" data-tchmi-top="266" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px">
 </div>
-<div id="TcHmiCheckbox_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="461" data-tchmi-left-unit="px" data-tchmi-text="Pallet sensor" data-tchmi-top="258" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px">
+<div id="TcHmiCheckbox_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="461" data-tchmi-left-unit="px" data-tchmi-text="Pallet sensor" data-tchmi-top="258" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-state-symbol="%s%ADS.PLC1.MAIN.PalletStacker.PalletSensor.sensorwaarde1%/s%">
+
+
+
+
 </div>
-<div id="TcHmiCheckbox_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="213" data-tchmi-left-unit="px" data-tchmi-text="Conveyor aan terugmelding" data-tchmi-top="258" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px">
+<div id="TcHmiCheckbox_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="324" data-tchmi-left-unit="px" data-tchmi-text="Conveyor aan terugmelding" data-tchmi-top="258" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px">
 </div>
-<div id="TcHmiNumericInput_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="True" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="461" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-top="465" data-tchmi-top-unit="px" data-tchmi-value="0" data-tchmi-width="150" data-tchmi-width-unit="px">
+<div id="TcHmiNumericInput_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="True" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="461" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-top="466" data-tchmi-top-unit="px" data-tchmi-value="%s%ADS.PLC1.MAIN.PalletStacker.AfstandSensor.IHmiStackerAfstandSensorSim%/s%" data-tchmi-width="150" data-tchmi-width-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -29,5 +31,71 @@
 }
 </script>
 
+</div>
+<div id="TcHmiButton_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="80" data-tchmi-left-unit="px" data-tchmi-text="Collect" data-tchmi-top="222" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True">
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.MAIN.tester%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/INT",
+          "value": 1
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
+<div id="TcHmiButton_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="80" data-tchmi-left-unit="px" data-tchmi-text="Empty" data-tchmi-top="292" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True">
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.MAIN.tester%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/INT",
+          "value": 2
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
+<div id="TcHmiButton_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="828" data-tchmi-left-unit="px" data-tchmi-text="Pins In" data-tchmi-top="232" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-state-symbol="%s%ADS.PLC1.MAIN.PalletStacker.Pins.gelukt1%/s%">
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": []
+  }
+]
+</script>
+</div>
+<div id="TcHmiButton_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="828" data-tchmi-left-unit="px" data-tchmi-text="Pins Uit" data-tchmi-top="292" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-state-symbol="%s%ADS.PLC1.MAIN.PalletStacker.Pins.gelukt2%/s%">
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": []
+  }
+]
+</script>
 </div>
 </div>

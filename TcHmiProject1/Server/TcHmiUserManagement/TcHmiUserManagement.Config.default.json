@@ -7,11 +7,11 @@
     "PASSWORD_MINIMUM_LENGTH": 1,
     "USERS": {
         "__SystemAdministrator": {
-            "ALGORITHM": 0,
-            "ENABLED": false,
-            "LAST_PASSWORD_CHANGE": "1970-01-01T00:00:00Z",
-            "PASSWORD": "",
-            "SALT": "",
+            "ALGORITHM": 1,
+            "ENABLED": true,
+            "LAST_PASSWORD_CHANGE": "2026-01-07T11:46:20.8408722Z",
+            "PASSWORD": "8bed1d878695edf44f170db980d6825e3b40407fe14a50a8323b3be9ba47eeff30ff10d28919d754c65f2b0aabcceb36342b1e6b2556dcb02617260fa404f1d4",
+            "SALT": "Jsm8USrKu6nCrfrUjv/jYYntGBb14Ai32R9iNeXbFhMQM/W1mwdpw7lTisFuPEYPR0auYayr7XwvdNLT6G5maQ==",
             "SECRET": {
                 "algorithm": 0,
                 "configuration": 0,

@@ -9,15 +9,15 @@ END_VAR
 
 VAR CONSTANT
 	MaxPallet : UINT := 5;
-	MaxPalletSensor : UINT:= maxpallet * pallethoogte + platformhoogte;
 	pallethoogte : UINT := 20;
 	platformhoogte : UINT := 15;
+	MaxPalletSensor : UINT:= (maxpallet * pallethoogte + platformhoogte);
 END_VAR
 
 VAR
-	Loopband : Temp_ITFLoopband;
-    Pins     : Temp_ITFPalletPins;
-    Lift     : ITFServoMotor;
+	Loopband : FB_temploopband;
+    Pins     : FB_temppalletpins;
+    Lift     : FB_servomotor;
     AfstandSensor  : FB_AfstandSensor;
 	PalletSensor : FB_LichtSensor;
 
@@ -26,6 +26,7 @@ VAR
 	
 	EBufferStatus : E_BufferStatus := 0;
 	
+	PinsTerugmelding: BOOL ;
 END_VAR
 
 //note
@@ -50,26 +51,29 @@ CASE State OF
 
 //E_PalletStackerStatus.Idle:
 E_PalletStackerStatus.Collecting: // evt veranderen in een method in de loopband controller zelf, implements band naam palletstacker conveyor
-    Loopband.Beweeg();
-    IF palletsensor.SensorWaarde THEN // vgm maar een output van twee lichtsensoren niet eentje voor voor eentje voor achter
+// check als er een pallet is om te bewegen
+    Loopband.Beweeg(); // check voor error of iets soort gelijks
+    IF palletsensor.SensorWaarde1 THEN 
         Loopband.Stop();
 		
 		// als de pins al laag zijn anders moeten ze eerst omlaag gaan. call of deze functie of transfer
-        State := E_PalletStackerStatus.PinsBewegen;
-    END_IF
-
-E_PalletStackerStatus.PinsBewegen:
-    IF Pins.ErinBewegen() THEN // return true als de functie klaar is of eventueel een andere waarde.
         State := E_PalletStackerStatus.LiftBewegen;
     END_IF
 
 E_PalletStackerStatus.LiftBewegen:
-	lift.Enable:= 1;
-	lift.DoelPositie:= lift.DoelPositie + pallethoogte; // geef een waarde mee deze moet nog bepaald worden
-    IF Lift.positie = lift.DoelPositie THEN
-		lift.Enable:= 0;
-        State := E_PalletStackerStatus.Omwisselen;
-    END_IF
+IF pins.EruitBewegen() = 1 THEN // pins uit de pallet want er zit nu een pallet onder
+lift.Enable := 1;
+lift.DoelPositie:= platformhoogte; // hellemaal omlaag
+IF Lift.positie = lift.DoelPositie THEN
+	IF pins.ErinBewegen() = 1 THEN // pins in de onderste pallet
+	lift.DoelPositie:= platformhoogte + pallethoogte;
+	IF Lift.positie = lift.DoelPositie THEN
+		State := E_PalletStackerStatus.idle;
+		lift.Enable:= 0; // uit en idle want hij is weer klaar voor een volgende pallet
+	END_IF
+END_IF;
+END_IF;
+END_IF;
 
 E_PalletStackerStatus.Omwisselen:
 	lift.DoelPositie:= lift.DoelPositie - pallethoogte;
@@ -85,7 +89,7 @@ E_PalletStackerStatus.legen:
     ELSE
 		lift.DoelPositie:= 0;
 		lift.Enable:= 1; //evt alleen enablen als het echt nodig is 
-		IF lift.DoelPositie:= lift.Positie THEN
+		IF lift.DoelPositie = lift.Positie THEN
 			lift.Enable:= 0;
 			Pins.eruitbewegen();
 		END_IF
@@ -101,7 +105,7 @@ END_CASE
 METHOD CollectPallet : bool
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[    IF State = E_PalletStackerStatus.idle AND NOT afstandsensor.SensorWaarde >= MaxPallet THEN
+        <ST><![CDATA[    IF State = E_PalletStackerStatus.idle AND NOT afstandsensor.SensorWaarde >= MaxPalletSensor THEN
         State := E_PalletStackerStatus.Collecting;
         CollectPallet := TRUE;
     ELSE
@@ -111,7 +115,7 @@ METHOD CollectPallet : bool
     </Method>
     <Method Name="EmptyStack" Id="{4fd40552-96ad-46df-a199-16395d9dac33}">
       <Declaration><![CDATA[{warning 'Add method implementation '}
-METHOD EmptyStack
+METHOD EmptyStack : bool
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[    IF State = E_PalletStackerStatus.Idle AND NOT afstandsensor.SensorWaarde >= MaxPallet THEN
@@ -153,7 +157,7 @@ END_VAR
     </Property>
     <Method Name="StackPallet" Id="{fa70ac83-9774-46ac-9ac1-602eca07dc85}">
       <Declaration><![CDATA[{warning 'Add method implementation '}
-METHOD StackPallet
+METHOD StackPallet : bool
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[    IF State = E_PalletStackerStatus.Idle AND NOT afstandsensor.SensorWaarde >= MaxPallet THEN

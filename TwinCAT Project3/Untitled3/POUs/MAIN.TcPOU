@@ -5,7 +5,9 @@
 VAR
 testvariabel2 : INT;
 StackerMotor : FB_ServoMotor();
-tester : BOOL := 0;
+PalletStacker : FB_PalletStacker();
+
+tester : int := 0;
 
 	temp2: INT;
 	temp3: E_MotorStatus;
@@ -18,17 +20,35 @@ END_VAR
       <ST><![CDATA[//hallo!
 //HOI
 //eigen branch
-StackerMotor();
+//StackerMotor();
 
-stackermotor.BeweegNaarDoel();
+//stackermotor.BeweegNaarDoel();
 
-stackermotor.DoelPositie:= temp5;
-temp2:= stackermotor.Positie;
-temp3:= stackermotor.MotorStatus;
-stackermotor.Enable:= temp4;
+//stackermotor.DoelPositie:= temp5;
+//temp2:= stackermotor.Positie;
+//temp3:= stackermotor.MotorStatus;
+//stackermotor.Enable:= temp4;
 
+palletstacker();
 
-
+CASE tester OF
+    1:
+        palletstacker.CollectPallet();
+		tester:=0;
+		
+    2:
+        palletstacker.EmptyStack();
+		tester:=0;
+    3:
+        palletstacker.Reset();
+		tester:=0;
+    4:
+        palletstacker.StackPallet();
+		tester:=0;
+    5:
+        palletstacker.Stop();
+		tester:=0;
+END_CASE
 ]]></ST>
     </Implementation>
   </POU>

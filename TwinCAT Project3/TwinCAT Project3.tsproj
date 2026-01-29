@@ -7,7 +7,9 @@
 			</Settings>
 			<Licenses>
 				<Target>
-					<ManualSelect>{6952449D-F68C-49A2-ADE4-8639D85B33A4}</ManualSelect>
+					<ManualSelect>{796D380F-D49E-4C0C-A05F-500052FAC883}</ManualSelect>
+					<ManualSelect>{7AFD0713-1333-4A3B-938C-7B9BD0418C8D}</ManualSelect>
+					<ManualSelect>{FDE02854-39A7-440C-9EAE-C234A16A3CED}</ManualSelect>
 				</Target>
 			</Licenses>
 			<Tasks>
@@ -18,7 +20,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{5E8BF161-BFB5-4A70-B292-7A8F84063DE5}" Name="Untitled3" PrjFilePath="Untitled3\Untitled3.plcproj" TmcFilePath="Untitled3\Untitled3.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{4CAD30E9-65F5-DBEA-0757-B26FFC1B0227}" TmcPath="Untitled3\Untitled3.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{C62BD514-268B-BE2C-E44D-D4C24D95A156}" TmcPath="Untitled3\Untitled3.tmc">
 					<Name>Untitled3 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
