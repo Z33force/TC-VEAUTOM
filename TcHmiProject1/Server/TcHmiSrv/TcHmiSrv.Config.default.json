@@ -1018,6 +1018,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.MAIN.PalletStacker.NextStep": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::NextStep",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                    },
+                    {
+                        "propertyOrder": 17
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.MAIN.PalletStacker.PalletSensor.BHmiPalletSensorSim": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -1040,6 +1057,40 @@
             "DOMAIN": "ADS",
             "DYNAMIC": true,
             "MAPPING": "PLC1::MAIN::PalletStacker::PalletSensor::sensorwaarde1",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.Pins.PinsIn": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::Pins::PinsIn",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.Pins.PinsUit": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::Pins::PinsUit",
             "SCHEMA": {
                 "allOf": [
                     {
@@ -1098,6 +1149,23 @@
                     },
                     {
                         "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.StateString": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::StateString",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                    },
+                    {
+                        "propertyOrder": 11
                     }
                 ]
             },
@@ -4128,11 +4196,15 @@
                 "ADS.PLC1.MAIN.PalletStacker.Lift.IDoelPositie": 3,
                 "ADS.PLC1.MAIN.PalletStacker.Lift.IPositie": 3,
                 "ADS.PLC1.MAIN.PalletStacker.Loopband.LoopbandActief": 3,
+                "ADS.PLC1.MAIN.PalletStacker.NextStep": 3,
                 "ADS.PLC1.MAIN.PalletStacker.PalletSensor.BHmiPalletSensorSim": 3,
                 "ADS.PLC1.MAIN.PalletStacker.PalletSensor.sensorwaarde1": 3,
+                "ADS.PLC1.MAIN.PalletStacker.Pins.PinsIn": 3,
+                "ADS.PLC1.MAIN.PalletStacker.Pins.PinsUit": 3,
                 "ADS.PLC1.MAIN.PalletStacker.Pins.gelukt1": 3,
                 "ADS.PLC1.MAIN.PalletStacker.Pins.gelukt2": 3,
                 "ADS.PLC1.MAIN.PalletStacker.State": 3,
+                "ADS.PLC1.MAIN.PalletStacker.StateString": 3,
                 "ADS.PLC1.MAIN.tester": 3,
                 "ChangeUserSettings": 3,
                 "ConfirmAlarm": 3,

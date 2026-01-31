@@ -10,7 +10,7 @@ END_VAR
 VAR CONSTANT
 	MaxPallet : UINT := 5;
 	pallethoogte : UINT := 20;
-	platformhoogte : UINT := 15;
+	platformhoogte : UINT := 0;
 	MaxPalletSensor : UINT:= (maxpallet * pallethoogte + platformhoogte);
 END_VAR
 
@@ -22,11 +22,17 @@ VAR
 	PalletSensor : FB_LichtSensor;
 
     State    : E_PalletStackerStatus := E_PalletStackerStatus.Idle;
+	StateString : string;
     Faulted  : BOOL;
 	
 	EBufferStatus : E_BufferStatus := 0;
 	
 	PinsTerugmelding: BOOL ;
+	temp: BOOL;
+	temp2: BOOL;
+	NextStep :STRING;
+	ERROR: BOOL;
+	ReadyForNext: BOOL;
 END_VAR
 
 //note
@@ -35,67 +41,106 @@ END_VAR
 // lift logica kan ik al regelen en de basis functionaliteit
 // toevoegen van errors, alarms, en safety]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//Check als de buffer vol zit
+      <ST><![CDATA[// File: PalletStackerController.TcPOU
+
+// Update bufferstatus
+statestring := TO_STRING(state);
+
 IF AfstandSensor.SensorWaarde >= MaxPalletSensor THEN
-	EBufferStatus:= E_BufferStatus.vol;
-ELSIF AfstandSensor.SensorWaarde = MaxPalletSensor - 2 * pallethoogte AND maxpalletsensor > 2 *pallethoogte + platformhoogte THEN
-	EBufferStatus:= E_BufferStatus.BijnaVol;
-ELSIF afstandsensor.SensorWaarde >= platformhoogte + pallethoogte THEN	
-	EBufferStatus := E_BufferStatus.DeelsGevuld;
+    EBufferStatus := E_BufferStatus.vol;
+ELSIF AfstandSensor.SensorWaarde = MaxPalletSensor - 2 * pallethoogte 
+     AND MaxPalletSensor > 2 * pallethoogte + platformhoogte THEN
+    EBufferStatus := E_BufferStatus.BijnaVol;
+ELSIF AfstandSensor.SensorWaarde >= platformhoogte + pallethoogte THEN
+    EBufferStatus := E_BufferStatus.DeelsGevuld;
 ELSE
-	EBufferStatus := E_BufferStatus.Leeg;	
+    EBufferStatus := E_BufferStatus.Leeg;
 END_IF
 
-
+// Zorg dat lift altijd enabled is voor beweging
+lift.Enable := 1;
 CASE State OF
 
-//E_PalletStackerStatus.Idle:
-E_PalletStackerStatus.Collecting: // evt veranderen in een method in de loopband controller zelf, implements band naam palletstacker conveyor
-// check als er een pallet is om te bewegen
-    Loopband.Beweeg(); // check voor error of iets soort gelijks
-    IF palletsensor.SensorWaarde1 THEN 
+//==================== Collecting ====================
+E_PalletStackerStatus.Collecting:
+nextstep := 'PalletSensor check';
+
+// Alleen pallet pakken als onderste niveau vrij is
+IF EBufferStatus = E_BufferStatus.Leeg OR EBufferStatus = E_BufferStatus.DeelsGevuld AND readyfornext:= TRUE THEN
+    IF palletsensor.SensorWaarde1 THEN
+        palletsensor.SensorWaarde := 0; // reset tijdelijk
+		readyfornext:= FALSE;
         Loopband.Stop();
-		
-		// als de pins al laag zijn anders moeten ze eerst omlaag gaan. call of deze functie of transfer
-        State := E_PalletStackerStatus.LiftBewegen;
+        State := E_PalletStackerStatus.PinsUitBewegen;
     END_IF
+ELSE
+    // onderste niveau bezet, niet pins uit, wacht of stop loopband
+    Loopband.Stop();
+END_IF
 
+//==================== Pins Uit Bewegen ====================
+E_PalletStackerStatus.PinsUitBewegen:
+nextstep := 'PinsUit terugmelding';
+IF pins.PinsUit THEN
+    State := E_PalletStackerStatus.LiftBewegen;
+ELSE 
+	pins.EruitBewegen();
+END_IF
+
+//==================== Lift Bewegen ====================
 E_PalletStackerStatus.LiftBewegen:
-IF pins.EruitBewegen() = 1 THEN // pins uit de pallet want er zit nu een pallet onder
-lift.Enable := 1;
-lift.DoelPositie:= platformhoogte; // hellemaal omlaag
-IF Lift.positie = lift.DoelPositie THEN
-	IF pins.ErinBewegen() = 1 THEN // pins in de onderste pallet
-	lift.DoelPositie:= platformhoogte + pallethoogte;
-	IF Lift.positie = lift.DoelPositie THEN
-		State := E_PalletStackerStatus.idle;
-		lift.Enable:= 0; // uit en idle want hij is weer klaar voor een volgende pallet
-	END_IF
-END_IF;
-END_IF;
+IF pins.pinsuit THEN
+	
+lift.DoelPositie := platformhoogte; // helemaal omlaag
+lift.BeweegNaarDoel();
+nextstep := 'Lift naar doelpositie';
+IF lift.positie = platformhoogte THEN
+    State := E_PalletStackerStatus.PinsInBewegen;
+END_IF
+
+ELSE
+	ERROR:= 1;
 END_IF;
 
+//==================== Pins In Bewegen ====================
+E_PalletStackerStatus.PinsInBewegen:
+nextstep := 'PinsIn terugmelding';
+IF  pins.pinsin THEN
+    State := E_PalletStackerStatus.PalletLaden;
+ELSE
+	pins.ErinBewegen();
+END_IF
+
+//==================== Pallet Laden ====================
+E_PalletStackerStatus.PalletLaden:
+lift.DoelPositie := platformhoogte + pallethoogte;
+lift.BeweegNaarDoel();
+nextstep := 'Lift naar doelpositie';
+IF lift.positie = platformhoogte + pallethoogte THEN
+	ReadyForNext:= TRUE;
+    State := E_PalletStackerStatus.Idle;
+END_IF
+
+//==================== Omwisselen ====================
 E_PalletStackerStatus.Omwisselen:
-	lift.DoelPositie:= lift.DoelPositie - pallethoogte;
-	lift.Enable := 1;
-	IF Lift.positie = lift.DoelPositie THEN
-		lift.Enable:= 0;
-		State := E_PalletStackerStatus.idle;
-	END_IF;
+lift.DoelPositie := lift.DoelPositie - pallethoogte;
+lift.BeweegNaarDoel();
+IF lift.positie = lift.DoelPositie THEN
+    State := E_PalletStackerStatus.Idle;
+END_IF
 
-E_PalletStackerStatus.legen:
-    IF EBufferStatus = E_BufferStatus.Leeg THEN
-        State := E_PalletStackerStatus.idle;
-    ELSE
-		lift.DoelPositie:= 0;
-		lift.Enable:= 1; //evt alleen enablen als het echt nodig is 
-		IF lift.DoelPositie = lift.Positie THEN
-			lift.Enable:= 0;
-			Pins.eruitbewegen();
-		END_IF
+//==================== Legen ====================
+E_PalletStackerStatus.Legen:
+IF EBufferStatus = E_BufferStatus.Leeg THEN
+    State := E_PalletStackerStatus.Idle;
+ELSE
+    lift.DoelPositie := 0;
+    lift.Enable := 1;
+    IF lift.DoelPositie = lift.positie THEN
+        lift.Enable := 0;
+        pins.EruitBewegen();
     END_IF
-
-//E_PalletStackerStatus.error:
+END_IF
 
 END_CASE
 ]]></ST>
@@ -161,7 +206,7 @@ METHOD StackPallet : bool
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[    IF State = E_PalletStackerStatus.Idle AND NOT afstandsensor.SensorWaarde >= MaxPallet THEN
-        State := E_PalletStackerStatus.PinsBewegen;
+       // State := E_PalletStackerStatus.PinsBewegen;
         StackPallet := TRUE;
     ELSE
         StackPallet := FALSE;

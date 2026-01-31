@@ -7,8 +7,9 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	gelukt1 :BOOL;
-	gelukt2 :bool;
+	PinsIn :BOOL:= FALSE;
+	PinsUit :BOOL := TRUE;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -27,13 +28,7 @@ METHOD Beweegpinsnaarbeneden : bool
 METHOD ErinBewegen : bool
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-IF gelukt1 THEN
-erinbewegen:= 1;
-gelukt2 := 0;
-END_IF;
-
-]]></ST>
+        <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
     <Method Name="EruitBewegen" Id="{51ecdb2a-4d09-46c6-9136-f03523cff8d9}">
@@ -41,12 +36,7 @@ END_IF;
 METHOD EruitBewegen : bool
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF gelukt2 THEN
-eruitbewegen:= 1;
-gelukt1 := 0;
-END_IF;
-
-]]></ST>
+        <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
   </POU>
