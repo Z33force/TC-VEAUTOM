@@ -500,7 +500,7 @@
 </script>
 
 </div>
-<div id="TcHmiTextbox_12" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="617" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-top="93" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text="TIMER">
+<div id="TcHmiTextbox_12" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="617" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-top="89" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text="%s%ADS.PLC1.MAIN.PalletStacker.HMIETTIMER%/s%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,

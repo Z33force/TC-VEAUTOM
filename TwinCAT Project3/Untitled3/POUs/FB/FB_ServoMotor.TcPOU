@@ -32,76 +32,70 @@ VAR CONSTANT
 END_VAR
 
 //notes
-//  status schrijven en]]></Declaration>
+//  status schrijven en
+VAR
+	BBewegenActief: BOOL;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[TONBeweegTimer(
-    IN := BInternEnable,
-    PT := T#50MS
+        <ST><![CDATA[(* ================= TIMER ================= *)
+TONBeweegTimer(
+    IN := BInternEnable AND NOT BBewegenActief,
+    PT := T#1s
 );
 
-IF BInternEnable THEN
-	EMotorStatusIntern := 1;
-    IF TONBeweegTimer.Q THEN
-        BTONVariabele := TRUE;
-    END_IF
-ELSE 
-	EMotorStatusIntern := 0;
+(* ================= START NA TIMER ================= *)
+IF TONBeweegTimer.Q THEN
+    BBewegenActief := TRUE;
+    TONBeweegTimer(IN := FALSE);   // DIRECT reset → cruciaal
 END_IF
 
+(* ================= STATUS ================= *)
+IF BInternEnable THEN
+    EMotorStatusIntern := 1;
+ELSE
+    EMotorStatusIntern := 0;
+END_IF
 
-IF BInternEnable AND BTONVariabele THEN
+(* ================= BEWEGEN ================= *)
+IF BInternEnable AND BBewegenActief THEN
 
-    // Move towards target position
     IF IDoelPositie > IPositie THEN
         IPositie := IPositie + IMotorSnelheid;
-		EMotorStatusIntern := 3;
+        EMotorStatusIntern := 3;
+
         IF IPositie >= IDoelPositie THEN
             IPositie := IDoelPositie;
-            BTONVariabele := FALSE;
+            BBewegenActief := FALSE;
         END_IF
 
     ELSIF IDoelPositie < IPositie THEN
         IPositie := IPositie - IMotorSnelheid;
-		EMotorStatusIntern := 4;
+        EMotorStatusIntern := 4;
+
         IF IPositie <= IDoelPositie THEN
             IPositie := IDoelPositie;
-            BTONVariabele := FALSE;
+            BBewegenActief := FALSE;
         END_IF
 
     ELSE
-        // Already at target
-        BTONVariabele := FALSE;
+        BBewegenActief := FALSE;
     END_IF
 END_IF
 
-
-
+(* ================= UIT / STOP ================= *)
 IF NOT BInternEnable THEN
-
-    // Stop normal movement
-    BTONVariabele := FALSE;
-
-    // Reset timer
+    BBewegenActief := FALSE;
     TONBeweegTimer(IN := FALSE);
 
-    // Move position smoothly back to zero
     IF IPositie > 0 THEN
         IPositie := IPositie - IMotorStopSnelheid;
-
-        IF IPositie <= 0 THEN
-            IPositie := 0;
-        END_IF
+        IF IPositie < 0 THEN IPositie := 0; END_IF
 
     ELSIF IPositie < 0 THEN
         IPositie := IPositie + IMotorStopSnelheid;
-
-        IF IPositie >= 0 THEN
-            IPositie := 0;
-        END_IF
+        IF IPositie > 0 THEN IPositie := 0; END_IF
     END_IF
 END_IF
-
-
 ]]></ST>
       </Implementation>
     </Method>
