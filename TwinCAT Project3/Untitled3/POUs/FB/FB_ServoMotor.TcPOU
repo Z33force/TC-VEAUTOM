@@ -15,10 +15,11 @@ VAR
 	IDoelPositie	: INT;
 	BInternEnable : BOOL;
 	
+	MotorStatusString: STRING;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[MotorStatusString := TO_STRING(EMotorStatusIntern);]]></ST>
     </Implementation>
     <Method Name="BeweegNaarDoel" Id="{3aa19c92-d64d-4fa9-b144-f711e11a9595}">
       <Declaration><![CDATA[METHOD PUBLIC BeweegNaarDoel

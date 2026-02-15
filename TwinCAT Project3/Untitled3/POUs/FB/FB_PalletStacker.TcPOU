@@ -84,6 +84,7 @@ nextstep := 'PalletSensor check';
 
 // Alleen pallet pakken als onderste niveau vrij is
 IF EBufferStatus = E_BufferStatus.Leeg OR EBufferStatus = E_BufferStatus.DeelsGevuld AND readyfornext = TRUE THEN
+	Loopband.Beweeg();
     IF palletsensor.SensorWaarde1 THEN
         palletsensor.SensorWaarde := 0; // reset tijdelijk
 		readyfornext:= FALSE;
@@ -96,6 +97,7 @@ IF EBufferStatus = E_BufferStatus.Leeg OR EBufferStatus = E_BufferStatus.DeelsGe
 ELSE
     // onderste niveau bezet, niet pins uit, wacht of stop loopband
     Loopband.Stop();
+	// pallet moet geleegd worden
 END_IF
 
 //==================== Pins Uit Bewegen ====================
@@ -152,9 +154,12 @@ IF EBufferStatus = E_BufferStatus.Leeg THEN
     State := E_PalletStackerStatus.Idle;
 ELSE
 	lift.DoelPositie := 0;
+	lift.BeweegNaarDoel();
 	IF lift.DoelPositie = lift.positie THEN
 		pins.EruitBewegen();
+		// if pinsuit terugmleding
 		//Deur veiligheid disable
+		// IF legen confirmed knop
 		AfstandSensor.SensorWaarde:= 0;
 		state:= E_PalletStackerStatus.Idle;
 	END_IF
@@ -162,6 +167,8 @@ END_IF
 
 E_PalletStackerStatus.Error:
 	PalletError:= 1;
+	Loopband.Stop();
+	lift.Enable := 0;
 	IF AlarmAck = 1 THEN
 		State:= E_PalletStackerStatus.Idle;
 	END_IF;
