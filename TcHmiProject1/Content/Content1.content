@@ -65,7 +65,7 @@
 
 <script data-tchmi-target-attribute="data-tchmi-fill-color" type="application/json">
 {
-  "color": "rgba(132, 83, 83, 1)"
+  "color": "rgba(183, 171, 171, 1)"
 }
 </script>
 
@@ -121,7 +121,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(146, 16, 16, 1)"
+                    "color": "rgba(183, 171, 171, 1)"
                   }
                 },
                 "asyncWait": true
@@ -136,11 +136,11 @@
 ]
 </script>
 </div>
-<div id="TcHmiTextblock_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="416" data-tchmi-left-unit="px" data-tchmi-text="Servo lift" data-tchmi-top="480" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px" data-tchmi-word-wrap="True">
+<div id="TcHmiTextblock_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="416" data-tchmi-left-unit="px" data-tchmi-text="Servo lift" data-tchmi-top="480" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-horizontal-alignment="Center">
 </div>
 <div id="TcHmiTextblock_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="772" data-tchmi-left-unit="px" data-tchmi-text="Status " data-tchmi-top="490" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="True">
 </div>
-<div id="Errorlicht" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="75" data-tchmi-height-unit="px" data-tchmi-left="847" data-tchmi-left-unit="px" data-tchmi-top="287" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px">
+<div id="Errorlicht" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="75" data-tchmi-height-unit="px" data-tchmi-left="847" data-tchmi-left-unit="px" data-tchmi-top="274" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(117, 54, 54, 1)"
@@ -149,7 +149,7 @@
 
 <script data-tchmi-target-attribute="data-tchmi-fill-color" type="application/json">
 {
-  "color": "rgba(146, 16, 16, 1)"
+  "color": "rgba(183, 171, 171, 1)"
 }
 </script>
 
@@ -188,7 +188,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(34, 158, 29, 1)"
+                    "color": "rgba(146, 16, 16, 1)"
                   }
                 },
                 "asyncWait": true
@@ -205,7 +205,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(146, 16, 16, 1)"
+                    "color": "rgba(183, 171, 171, 1)"
                   }
                 },
                 "asyncWait": true
@@ -220,9 +220,9 @@
 ]
 </script>
 </div>
-<div id="TcHmiTextblock_8" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="847" data-tchmi-left-unit="px" data-tchmi-text="ERROR" data-tchmi-top="251" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px" data-tchmi-word-wrap="True">
+<div id="TcHmiTextblock_8" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="16" data-tchmi-height-unit="px" data-tchmi-left="847" data-tchmi-left-unit="px" data-tchmi-text="ERROR" data-tchmi-top="349" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-horizontal-alignment="Center">
 </div>
-<div id="TcHmiTextblock_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="416" data-tchmi-left-unit="px" data-tchmi-text="Loopband" data-tchmi-top="617" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px" data-tchmi-word-wrap="True">
+<div id="TcHmiTextblock_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="416" data-tchmi-left-unit="px" data-tchmi-text="Loopband" data-tchmi-top="617" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-horizontal-alignment="Center">
 </div>
 <div id="ServoLicht" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="75" data-tchmi-height-unit="px" data-tchmi-left="416" data-tchmi-left-unit="px" data-tchmi-top="408" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
@@ -233,7 +233,7 @@
 
 <script data-tchmi-target-attribute="data-tchmi-fill-color" type="application/json">
 {
-  "color": "rgba(146, 16, 16, 1)"
+  "color": "rgba(183, 171, 171, 1)"
 }
 </script>
 
@@ -289,7 +289,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(146, 16, 16, 1)"
+                    "color": "rgba(183, 171, 171, 1)"
                   }
                 },
                 "asyncWait": true
@@ -440,27 +440,8 @@
 ]
 </script>
 </div>
-<div id="TcHmiButton_10" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="274" data-tchmi-left-unit="px" data-tchmi-text="Pallet sensor" data-tchmi-top="43" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
-  {
-    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
-    "actions": [
-      {
-        "objectType": "WriteToSymbol",
-        "active": true,
-        "symbolExpression": "%s%ADS.PLC1.MAIN.PalletStacker.PalletSensor.sensorwaarde1%/s%",
-        "value": {
-          "objectType": "StaticValue",
-          "valueType": "tchmi:general#/definitions/BOOL",
-          "value": true
-        },
-        "asyncWait": true
-      }
-    ]
-  }
-]
-</script>
+<div id="TcHmiButton_10" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="274" data-tchmi-left-unit="px" data-tchmi-text="PalletVoorLift" data-tchmi-top="43" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-state-symbol="%s%ADS.PLC1.MAIN.PalletStacker.PalletBufferSensor::sensorwaarde1%/s%">
+
 </div>
 <div id="TcHmiTextbox_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="772" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="%s%ADS.PLC1.MAIN.PalletStacker.StateString%/s%" data-tchmi-top="534" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
@@ -473,7 +454,7 @@
 </script>
 
 </div>
-<div id="TcHmiTextbox_11" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="617" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="%s%ADS.PLC1.MAIN.PalletStacker.NextStep%/s%" data-tchmi-top="53" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px">
+<div id="TcHmiTextbox_11" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="617" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="%s%ADS.PLC1.MAIN.PalletStacker.NextStep%/s%" data-tchmi-top="53" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="345" data-tchmi-width-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -493,6 +474,12 @@
   "left": 3
 }
 </script>
+
+</div>
+<div id="TcHmiButton_11" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="847" data-tchmi-left-unit="px" data-tchmi-text="Alarm Ack" data-tchmi-top="191" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-state-symbol="%s%ADS.PLC1.MAIN.PalletStacker.AlarmAck%/s%">
+
+</div>
+<div id="TcHmiButton_12" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="391" data-tchmi-left-unit="px" data-tchmi-text="PalletInLift" data-tchmi-top="43" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-state-symbol="%s%ADS.PLC1.MAIN.PalletStacker.PalletInLiftSensor.sensorwaarde1%/s%">
 
 </div>
 </div>

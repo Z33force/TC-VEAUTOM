@@ -20,7 +20,8 @@ VAR
     Pins     : FB_temppalletpins;
     Lift     : FB_servomotor;
     AfstandSensor  : FB_AfstandSensor;
-	PalletSensor : FB_LichtSensor;
+	PalletBufferSensor : FB_LichtSensor;
+	PalletInLiftSensor : FB_lichtSensor;
 
     State    : E_PalletStackerStatus := E_PalletStackerStatus.Idle;
 	StateString : string;
@@ -33,13 +34,14 @@ VAR
 	temp2: BOOL;
 	NextStep :STRING;
 	ERROR: BOOL;
-	ReadyForNext: BOOL;
+	ReadyForNext: BOOL := 1;
 	
 	ErrorTimer: TON;
 	
 	HMIETTIMER: TIME;
 	AlarmAck: BOOL;
 	AlarmTrig: BOOL;
+	PalletLoadedBeforeLift: BOOL;
 END_VAR
 
 //note
@@ -77,17 +79,38 @@ ELSE
 END_IF
 
 
+
+
 CASE State OF
+//==================== Idle ====================
+E_PalletStackerStatus.Idle:
+nextstep := 'Idle';
+
+
 //==================== Collecting ====================
+
 E_PalletStackerStatus.Collecting:
 nextstep := 'PalletSensor check';
 
-// Alleen pallet pakken als onderste niveau vrij is
-IF EBufferStatus = E_BufferStatus.Leeg OR EBufferStatus = E_BufferStatus.DeelsGevuld AND readyfornext = TRUE THEN
+
+IF (EBufferStatus = E_BufferStatus.Leeg OR EBufferStatus = E_BufferStatus.DeelsGevuld) AND NOT PalletLoadedBeforeLift THEN
 	Loopband.Beweeg();
-    IF palletsensor.SensorWaarde1 THEN
-        palletsensor.SensorWaarde := 0; // reset tijdelijk
+	nextstep := 'PalletBeforeLiftSensor terugmelding';
+    IF PalletBufferSensor.SensorWaarde1 THEN
+		 Loopband.Stop();
+		 PalletLoadedBeforeLift:= 1;
+	ELSE 
+		AlarmTrig:= TRUE;
+    END_IF
+		 
+// Alleen pallet pakken als onderste niveau vrij is
+
+ELSIF (EBufferStatus = E_BufferStatus.Leeg OR EBufferStatus = E_BufferStatus.DeelsGevuld) AND readyfornext = TRUE AND lift.Positie = platformhoogte + pallethoogte AND PalletLoadedBeforeLift THEN
+	Loopband.Beweeg();
+	nextstep := 'PalletSensor2 terugmelding';
+    IF PalletInLiftSensor.SensorWaarde1 THEN
 		readyfornext:= FALSE;
+		PalletLoadedBeforeLift:= 0;
         Loopband.Stop();
         State := E_PalletStackerStatus.PinsUitBewegen;
 		AlarmTrig:= FALSE;
@@ -144,7 +167,7 @@ lift.BeweegNaarDoel();
 nextstep := 'Lift naar doelpositie';
 IF lift.positie = platformhoogte + pallethoogte THEN
 	ReadyForNext:= TRUE;
-    State := E_PalletStackerStatus.Idle;
+    State := E_PalletStackerStatus.collecting;
 	AfstandSensor.SensorWaarde:= AfstandSensor.SensorWaarde + pallethoogte;
 END_IF
 
@@ -165,12 +188,15 @@ ELSE
 	END_IF
 END_IF
 
+//==================== Error ====================
 E_PalletStackerStatus.Error:
-	PalletError:= 1;
+	ERROR:= 1;
 	Loopband.Stop();
 	lift.Enable := 0;
+	nextstep := 'ERROR';
 	IF AlarmAck = 1 THEN
 		State:= E_PalletStackerStatus.Idle;
+		ERROR:= 0;
 	END_IF;
 END_CASE
 ]]></ST>
