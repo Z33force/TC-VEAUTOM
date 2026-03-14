@@ -976,6 +976,24 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.MAIN.PalletStacker.DoorClosed": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::DoorClosed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "Safety door switch (TRUE = closed/safe)",
+                        "propertyOrder": 6
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.MAIN.PalletStacker.EBufferStatus": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -1022,6 +1040,24 @@
                     },
                     {
                         "propertyOrder": 22
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.LegenConfirmed": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::LegenConfirmed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "HMI confirmation after emptying",
+                        "propertyOrder": 10
                     }
                 ]
             },
@@ -4353,9 +4389,11 @@
                 "ADS.Diagnostics": 3,
                 "ADS.PLC1.MAIN.PalletStacker.AfstandSensor.IHmiStackerAfstandSensorSim": 3,
                 "ADS.PLC1.MAIN.PalletStacker.AlarmAck": 3,
+                "ADS.PLC1.MAIN.PalletStacker.DoorClosed": 3,
                 "ADS.PLC1.MAIN.PalletStacker.EBufferStatus": 3,
                 "ADS.PLC1.MAIN.PalletStacker.ERROR": 3,
                 "ADS.PLC1.MAIN.PalletStacker.HMIETTIMER": 3,
+                "ADS.PLC1.MAIN.PalletStacker.LegenConfirmed": 3,
                 "ADS.PLC1.MAIN.PalletStacker.Lift.BInternEnable": 3,
                 "ADS.PLC1.MAIN.PalletStacker.Lift.EMotorStatusIntern": 3,
                 "ADS.PLC1.MAIN.PalletStacker.Lift.IDoelPositie": 3,
