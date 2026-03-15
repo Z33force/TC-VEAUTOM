@@ -304,7 +304,7 @@
 ]
 </script>
 </div>
-<div id="TcHmiNumericInput_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="True" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="274" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-top="146" data-tchmi-top-unit="px" data-tchmi-value="%s%ADS.PLC1.MAIN.PalletStacker.AfstandSensor.IHmiStackerAfstandSensorSim%/s%" data-tchmi-width="150" data-tchmi-width-unit="px">
+<div id="TcHmiNumericInput_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="True" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="281" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-top="167" data-tchmi-top-unit="px" data-tchmi-value="%s%ADS.PLC1.MAIN.PalletStacker.AfstandSensor.IHmiStackerAfstandSensorSim%/s%" data-tchmi-width="150" data-tchmi-width-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -315,7 +315,7 @@
 </script>
 
 </div>
-<div id="TcHmiTextbox_8" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="274" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Pallet hoogte sensor" data-tchmi-top="103" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px">
+<div id="TcHmiTextbox_8" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="281" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Pallet hoogte sensor" data-tchmi-top="125" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -485,5 +485,16 @@
 <div id="TcHmiButton_13" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="767" data-tchmi-left-unit="px" data-tchmi-text="Legen confirm" data-tchmi-top="191" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-state-symbol="%s%ADS.PLC1.MAIN.PalletStacker.LegenConfirmed%/s%">
 </div>
 <div id="TcHmiToggleButton_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-text="Doorclosed" data-tchmi-top="208" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-state-symbol="%s%ADS.PLC1.MAIN.PalletStacker.DoorClosed%/s%">
+</div>
+<div id="TcHmiTextbox_13" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="281" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="%s%ADS.PLC1.MAIN.PalletStacker.buffervolstring%/s%" data-tchmi-top="213" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
+{
+  "top": 3,
+  "right": 3,
+  "bottom": 3,
+  "left": 3
+}
+</script>
+
 </div>
 </div>

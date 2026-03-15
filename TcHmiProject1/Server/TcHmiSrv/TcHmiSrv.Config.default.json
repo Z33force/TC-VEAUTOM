@@ -1369,6 +1369,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.MAIN.PalletStacker.buffervolstring": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::buffervolstring",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                    },
+                    {
+                        "propertyOrder": 39
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.MAIN.tester": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -4412,6 +4429,7 @@
                 "ADS.PLC1.MAIN.PalletStacker.Pins.gelukt2": 3,
                 "ADS.PLC1.MAIN.PalletStacker.State": 3,
                 "ADS.PLC1.MAIN.PalletStacker.StateString": 3,
+                "ADS.PLC1.MAIN.PalletStacker.buffervolstring": 3,
                 "ADS.PLC1.MAIN.tester": 3,
                 "ChangeUserSettings": 3,
                 "ConfirmAlarm": 3,

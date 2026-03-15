@@ -41,7 +41,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[(* ================= TIMER ================= *)
 TONBeweegTimer(
     IN := BInternEnable AND NOT BBewegenActief,
-    PT := T#1s
+    PT := T#0.3S
 );
 
 (* ================= START NA TIMER ================= *)
