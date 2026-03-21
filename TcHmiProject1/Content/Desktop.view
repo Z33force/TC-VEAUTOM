@@ -8,6 +8,10 @@
     "name": "Home"
   },
   {
+    "content": "Content/Settings.content",
+    "name": "Settings"
+  },
+  {
     "content": "Content/Content1.content",
     "name": "Palletizer"
   },

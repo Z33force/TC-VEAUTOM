@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_ControllerPalletStacker" Id="{d94f743d-0e17-40db-8373-d42e5b0997e7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ControllerPalletStacker
+VAR_INPUT
+    CmdCollect     : BOOL;
+    CmdEmpty       : BOOL;
+    CmdReset       : BOOL;
+    CmdStack       : BOOL;
+    CmdStop        : BOOL;
+
+    AutoMode       : BOOL;   // enables automatic sensor simulation
+    AutoRun        : BOOL;   // starts repeated collecting cycles
+
+    Door1Closed    : BOOL;
+    Door2Closed    : BOOL;
+    EStop        : BOOL;
+
+    AutoDelayPalletBefore : TIME := T#2S;
+    AutoDelayPalletInLift : TIME := T#2S;
+    AutoDelayPinsOut      : TIME := T#1S;
+    AutoDelayPinsIn       : TIME := T#1S;
+    AutoCycleDelay        : TIME := T#2S;
+END_VAR
+
+VAR_IN_OUT
+    Stacker           : FB_PalletStacker; // change to your actual FB type
+    PalletBeforeLift  : BOOL; // PalletBufferSensor.SensorWaarde1
+    PalletInLift      : BOOL; // PalletInLiftSensor.SensorWaarde1
+    PinsOutFb         : BOOL; // pins.PinsUit feedback (simulated)
+    PinsInFb          : BOOL; // pins.PinsIn feedback (simulated)
+END_VAR
+
+VAR_OUTPUT
+    SafetyPaused  : BOOL;
+    AutoRunning   : BOOL;
+    ActiveCmd     : INT;  // 0 none, 1 collect, 2 empty, 3 reset, 4 stack, 5 stop
+END_VAR
+
+VAR
+    rCollect : R_TRIG;
+    rEmpty   : R_TRIG;
+    rReset   : R_TRIG;
+    rStack   : R_TRIG;
+    rStop    : R_TRIG;
+
+    cmdLatched : INT;
+
+    tPalletBefore : TON;
+    tPalletIn     : TON;
+    tPinsOut      : TON;
+    tPinsIn       : TON;
+    tAutoCycle    : TON;
+
+    prevState : E_PalletStackerStatus;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Safety
+SafetyPaused := (NOT Door1Closed) OR (NOT Door2Closed)OR (EStop); 
+IF SafetyPaused THEN
+    Stacker.Stop();
+    cmdLatched := 0;
+    ActiveCmd := 0;
+    AutoRunning := FALSE;
+END_IF
+
+// Edge detect commands
+rCollect(CLK := CmdCollect);
+rEmpty(CLK := CmdEmpty);
+rReset(CLK := CmdReset);
+rStack(CLK := CmdStack);
+rStop(CLK := CmdStop);
+
+IF rCollect.Q THEN cmdLatched := 1; END_IF
+IF rEmpty.Q THEN cmdLatched := 2; END_IF
+IF rReset.Q THEN cmdLatched := 3; END_IF
+IF rStack.Q THEN cmdLatched := 4; END_IF
+IF rStop.Q THEN
+    cmdLatched := 5;
+END_IF
+
+// Auto mode status
+AutoRunning := AutoMode AND AutoRun AND NOT SafetyPaused;
+
+// Execute commands
+IF NOT SafetyPaused THEN
+    IF ActiveCmd = 0 THEN
+        IF cmdLatched <> 0 THEN
+            CASE cmdLatched OF
+                1: Stacker.CollectPallet();
+                2: Stacker.EmptyStack();
+                3: Stacker.Reset();
+                4: Stacker.StackPallet();
+                5: Stacker.Stop();
+            END_CASE
+            ActiveCmd := cmdLatched;
+            cmdLatched := 0;
+        ELSIF AutoRunning AND (Stacker.State = E_PalletStackerStatus.Idle) THEN
+            tAutoCycle(IN := TRUE, PT := AutoCycleDelay);
+            IF tAutoCycle.Q THEN
+                Stacker.CollectPallet();
+                ActiveCmd := 1;
+                tAutoCycle(IN := FALSE);
+            END_IF
+        ELSE
+            tAutoCycle(IN := FALSE);
+        END_IF
+    ELSE
+        IF Stacker.State = E_PalletStackerStatus.Idle THEN
+            ActiveCmd := 0;
+        END_IF
+    END_IF
+END_IF
+
+// Auto sensor simulation
+IF AutoMode AND NOT SafetyPaused THEN
+    CASE Stacker.State OF
+        E_PalletStackerStatus.Collecting:
+            IF NOT PalletBeforeLift THEN
+                tPalletBefore(IN := TRUE, PT := AutoDelayPalletBefore);
+                IF tPalletBefore.Q THEN
+                    PalletBeforeLift := TRUE;
+                END_IF
+            ELSE
+                tPalletBefore(IN := FALSE);
+            END_IF
+
+            IF PalletBeforeLift AND NOT PalletInLift THEN
+                tPalletIn(IN := TRUE, PT := AutoDelayPalletInLift);
+                IF tPalletIn.Q THEN
+                    PalletInLift := TRUE;
+                    PalletBeforeLift := FALSE;
+                END_IF
+            ELSE
+                tPalletIn(IN := FALSE);
+            END_IF
+
+        E_PalletStackerStatus.PinsUitBewegen:
+            tPinsOut(IN := TRUE, PT := AutoDelayPinsOut);
+            IF tPinsOut.Q THEN
+                PinsOutFb := TRUE;
+                PinsInFb := FALSE;
+            END_IF
+
+        E_PalletStackerStatus.PinsInBewegen:
+            tPinsIn(IN := TRUE, PT := AutoDelayPinsIn);
+            IF tPinsIn.Q THEN
+                PinsInFb := TRUE;
+                PinsOutFb := FALSE;
+            END_IF
+
+        ELSE
+            tPalletBefore(IN := FALSE);
+            tPalletIn(IN := FALSE);
+            tPinsOut(IN := FALSE);
+            tPinsIn(IN := FALSE);
+    END_CASE
+
+    // Reset sensor pulses when leaving Collecting
+    IF Stacker.State <> prevState THEN
+        prevState := Stacker.State;
+        IF Stacker.State <> E_PalletStackerStatus.Collecting THEN
+            PalletBeforeLift := FALSE;
+            PalletInLift := FALSE;
+        END_IF
+    END_IF
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -3,6 +3,7 @@
   <POU Name="FB_PalletStacker" Id="{f45694bc-ba92-48cf-a251-5a58335c5f47}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_PalletStacker IMPLEMENTS ITFGesimuleerdAO, ITFPalletStacker
 VAR_INPUT
+DoorClosed           : BOOL;  // Safety door switch (TRUE = closed/safe)
 END_VAR
 VAR_OUTPUT
 	PalletError :bool := 0;
@@ -19,7 +20,7 @@ VAR
 	StateBeforeError : E_PalletStackerStatus;
 	LegenDone        : BOOL;
 
-	DoorClosed           : BOOL;  // Safety door switch (TRUE = closed/safe)
+
 	DoorLockEnable       : BOOL;  // Output to lock door (TRUE = lock)
 	DoorOpenAllowed      : BOOL;  // HMI indicator
 	
