@@ -24,7 +24,7 @@ VAR_INPUT
 END_VAR
 
 VAR_IN_OUT
-    Stacker           : FB_PalletStacker; // change to your actual FB type
+    Stacker           : FB_PalletStacker(DoorClosed:= Door1Closed); // change to your actual FB type
     PalletBeforeLift  : BOOL; // PalletBufferSensor.SensorWaarde1
     PalletInLift      : BOOL; // PalletInLiftSensor.SensorWaarde1
     PinsOutFb         : BOOL; // pins.PinsUit feedback (simulated)
@@ -56,7 +56,9 @@ VAR
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// Safety
-SafetyPaused := (NOT Door1Closed) OR (NOT Door2Closed)OR (EStop); 
+stacker(DoorClosed:= Door1Closed);
+SafetyPaused := (NOT Door1Closed) OR (NOT Door2Closed) OR (EStop);
+
 IF SafetyPaused THEN
     Stacker.Stop();
     cmdLatched := 0;
@@ -75,12 +77,10 @@ IF rCollect.Q THEN cmdLatched := 1; END_IF
 IF rEmpty.Q THEN cmdLatched := 2; END_IF
 IF rReset.Q THEN cmdLatched := 3; END_IF
 IF rStack.Q THEN cmdLatched := 4; END_IF
-IF rStop.Q THEN
-    cmdLatched := 5;
-END_IF
+IF rStop.Q THEN cmdLatched := 5; END_IF
 
-// Auto mode status
-AutoRunning := AutoMode AND AutoRun AND NOT SafetyPaused;
+// Looping collect mode
+AutoRunning := AutoRun AND NOT SafetyPaused;
 
 // Execute commands
 IF NOT SafetyPaused THEN
@@ -95,6 +95,7 @@ IF NOT SafetyPaused THEN
             END_CASE
             ActiveCmd := cmdLatched;
             cmdLatched := 0;
+
         ELSIF AutoRunning AND (Stacker.State = E_PalletStackerStatus.Idle) THEN
             tAutoCycle(IN := TRUE, PT := AutoCycleDelay);
             IF tAutoCycle.Q THEN
@@ -108,60 +109,6 @@ IF NOT SafetyPaused THEN
     ELSE
         IF Stacker.State = E_PalletStackerStatus.Idle THEN
             ActiveCmd := 0;
-        END_IF
-    END_IF
-END_IF
-
-// Auto sensor simulation
-IF AutoMode AND NOT SafetyPaused THEN
-    CASE Stacker.State OF
-        E_PalletStackerStatus.Collecting:
-            IF NOT PalletBeforeLift THEN
-                tPalletBefore(IN := TRUE, PT := AutoDelayPalletBefore);
-                IF tPalletBefore.Q THEN
-                    PalletBeforeLift := TRUE;
-                END_IF
-            ELSE
-                tPalletBefore(IN := FALSE);
-            END_IF
-
-            IF PalletBeforeLift AND NOT PalletInLift THEN
-                tPalletIn(IN := TRUE, PT := AutoDelayPalletInLift);
-                IF tPalletIn.Q THEN
-                    PalletInLift := TRUE;
-                    PalletBeforeLift := FALSE;
-                END_IF
-            ELSE
-                tPalletIn(IN := FALSE);
-            END_IF
-
-        E_PalletStackerStatus.PinsUitBewegen:
-            tPinsOut(IN := TRUE, PT := AutoDelayPinsOut);
-            IF tPinsOut.Q THEN
-                PinsOutFb := TRUE;
-                PinsInFb := FALSE;
-            END_IF
-
-        E_PalletStackerStatus.PinsInBewegen:
-            tPinsIn(IN := TRUE, PT := AutoDelayPinsIn);
-            IF tPinsIn.Q THEN
-                PinsInFb := TRUE;
-                PinsOutFb := FALSE;
-            END_IF
-
-        ELSE
-            tPalletBefore(IN := FALSE);
-            tPalletIn(IN := FALSE);
-            tPinsOut(IN := FALSE);
-            tPinsIn(IN := FALSE);
-    END_CASE
-
-    // Reset sensor pulses when leaving Collecting
-    IF Stacker.State <> prevState THEN
-        prevState := Stacker.State;
-        IF Stacker.State <> E_PalletStackerStatus.Collecting THEN
-            PalletBeforeLift := FALSE;
-            PalletInLift := FALSE;
         END_IF
     END_IF
 END_IF
