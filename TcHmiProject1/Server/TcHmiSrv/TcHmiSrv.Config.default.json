@@ -1079,6 +1079,24 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.MAIN.Ctrl.SafetyAck": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::Ctrl::SafetyAck",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "HMI button",
+                        "propertyOrder": 39
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.MAIN.Ctrl.SafetyPaused": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -4616,6 +4634,7 @@
                 "ADS.PLC1.MAIN.Ctrl.AutoDelayPinsOut": 3,
                 "ADS.PLC1.MAIN.Ctrl.AutoRunning": 3,
                 "ADS.PLC1.MAIN.Ctrl.Door2Closed": 3,
+                "ADS.PLC1.MAIN.Ctrl.SafetyAck": 3,
                 "ADS.PLC1.MAIN.Ctrl.SafetyPaused": 3,
                 "ADS.PLC1.MAIN.Door2Closed": 3,
                 "ADS.PLC1.MAIN.DoorClosed": 3,

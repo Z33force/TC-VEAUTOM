@@ -4,6 +4,8 @@
     <Declaration><![CDATA[FUNCTION_BLOCK FB_PalletStacker IMPLEMENTS ITFGesimuleerdAO, ITFPalletStacker
 VAR_INPUT
 DoorClosed           : BOOL;  // Safety door switch (TRUE = closed/safe)
+EStopOk    : BOOL;
+SafetyHold : BOOL;
 END_VAR
 VAR_OUTPUT
 	PalletError :bool := 0;
@@ -17,6 +19,8 @@ VAR CONSTANT
 END_VAR
 
 VAR
+
+	RunPermit  : BOOL; // internal
 	StateBeforeError : E_PalletStackerStatus;
 	LegenDone        : BOOL;
 
@@ -76,6 +80,9 @@ statestring := TO_STRING(state);
 buffervolstring := TO_STRING(EBufferStatus);
 HMIETTIMER := ErrorTimer.ET;
 
+// Run permit from controller safety
+RunPermit := EStopOk AND (NOT SafetyHold);
+
 // Detect state change for timer reset
 StateChanged := (State <> StatePrev);
 IF StateChanged THEN
@@ -83,19 +90,17 @@ IF StateChanged THEN
     AlarmTrig := FALSE;
 END_IF
 
-// Door handling (safety interlock)
-IF NOT DoorClosed THEN
-    // Pause everything while door open
+// Safety interlock (EStop or SafetyHold)
+IF NOT RunPermit THEN
     Loopband.Stop();
     lift.Enable := 0;
     AlarmTrig := FALSE;
-    // Do not change State while paused
 ELSE
     lift.Enable := 1;
 END_IF
 
-// ErrorTimer handling (reset on state change or door open)
-IF StateChanged OR NOT AlarmTrig OR NOT DoorClosed THEN
+// ErrorTimer handling (reset on state change or safety)
+IF StateChanged OR NOT AlarmTrig OR NOT RunPermit OR NOT DoorClosed THEN
     ErrorTimer(IN := FALSE, PT := T#60S);
 ELSE
     ErrorTimer(IN := TRUE, PT := T#60S);
@@ -126,11 +131,13 @@ ClearForLoad :=
     AND (NOT PalletLoadedBeforeLift);
 
 // Door lock logic
-IF State = E_PalletStackerStatus.Legen THEN
+IF NOT RunPermit THEN
+    DoorLockEnable := FALSE;
+ELSIF State = E_PalletStackerStatus.Legen THEN
     IF LegenDone THEN
-        DoorLockEnable := FALSE; // door open allowed after emptying done
+        DoorLockEnable := FALSE;
     ELSE
-        DoorLockEnable := TRUE;  // lock during movement
+        DoorLockEnable := TRUE;
     END_IF
 ELSIF CycleActive THEN
     DoorLockEnable := TRUE;
@@ -145,7 +152,7 @@ IF StopCmd THEN
     CycleActive := FALSE;
 END_IF
 
-IF StartCmd AND DoorClosed THEN
+IF StartCmd AND DoorClosed AND RunPermit THEN
     CycleActive := TRUE;
 END_IF
 
@@ -168,7 +175,12 @@ E_PalletStackerStatus.Idle:
 E_PalletStackerStatus.Collecting:
     nextstep := 'Collecting: pallet naar buffer';
 
-    IF NOT DoorClosed THEN
+    IF NOT RunPermit THEN
+        nextstep := 'Collecting: veiligheidsstop, pauze';
+        Loopband.Stop();
+        AlarmTrig := FALSE;
+
+    ELSIF NOT DoorClosed THEN
         nextstep := 'Collecting: deur open, pauze';
         Loopband.Stop();
         AlarmTrig := FALSE;
@@ -232,7 +244,10 @@ E_PalletStackerStatus.Collecting:
 E_PalletStackerStatus.PinsUitBewegen:
     nextstep := 'PinsUit: pallet neerzetten op pins';
 
-    IF NOT DoorClosed THEN
+    IF NOT RunPermit THEN
+        nextstep := 'PinsUit: veiligheidsstop, pauze';
+        AlarmTrig := FALSE;
+    ELSIF NOT DoorClosed THEN
         nextstep := 'PinsUit: deur open, pauze';
         AlarmTrig := FALSE;
     ELSIF pins.PinsUit THEN
@@ -247,7 +262,10 @@ E_PalletStackerStatus.PinsUitBewegen:
 E_PalletStackerStatus.LiftBewegen:
     nextstep := 'LiftBewegen: lift omlaag';
 
-    IF NOT DoorClosed THEN
+    IF NOT RunPermit THEN
+        nextstep := 'LiftBewegen: veiligheidsstop, pauze';
+        AlarmTrig := FALSE;
+    ELSIF NOT DoorClosed THEN
         nextstep := 'LiftBewegen: deur open, pauze';
         AlarmTrig := FALSE;
     ELSIF pins.pinsuit THEN
@@ -268,7 +286,10 @@ E_PalletStackerStatus.LiftBewegen:
 E_PalletStackerStatus.PinsInBewegen:
     nextstep := 'PinsIn: pallet vrijgeven';
 
-    IF NOT DoorClosed THEN
+    IF NOT RunPermit THEN
+        nextstep := 'PinsIn: veiligheidsstop, pauze';
+        AlarmTrig := FALSE;
+    ELSIF NOT DoorClosed THEN
         nextstep := 'PinsIn: deur open, pauze';
         AlarmTrig := FALSE;
     ELSIF pins.pinsin THEN
@@ -283,7 +304,10 @@ E_PalletStackerStatus.PinsInBewegen:
 E_PalletStackerStatus.PalletLaden:
     nextstep := 'PalletLaden: lift omhoog klaar voor next';
 
-    IF NOT DoorClosed THEN
+    IF NOT RunPermit THEN
+        nextstep := 'PalletLaden: veiligheidsstop, pauze';
+        AlarmTrig := FALSE;
+    ELSIF NOT DoorClosed THEN
         nextstep := 'PalletLaden: deur open, pauze';
         AlarmTrig := FALSE;
     ELSE
@@ -292,7 +316,7 @@ E_PalletStackerStatus.PalletLaden:
 
         IF ABS(lift.positie - (platformhoogte + pallethoogte)) <= liftTol THEN
             readyfornext := TRUE;
-            CycleActive := FALSE; // single-run klaar
+            CycleActive := FALSE;
             State := E_PalletStackerStatus.Idle;
             AfstandSensor.SensorWaarde := AfstandSensor.SensorWaarde + pallethoogte;
             AlarmTrig := FALSE;
@@ -305,8 +329,12 @@ E_PalletStackerStatus.PalletLaden:
 E_PalletStackerStatus.Legen:
     nextstep := 'Legen: pallets naar bodem';
 
-    // Alleen pauzeren bij deur open als we nog bewegen
-    IF (NOT DoorClosed) AND (NOT LegenDone) THEN
+    IF NOT RunPermit THEN
+        nextstep := 'Legen: veiligheidsstop, pauze';
+        Loopband.Stop();
+        AlarmTrig := FALSE;
+
+    ELSIF (NOT DoorClosed) AND (NOT LegenDone) THEN
         nextstep := 'Legen: deur open, pauze beweging';
         Loopband.Stop();
         AlarmTrig := FALSE;
@@ -357,7 +385,6 @@ E_PalletStackerStatus.Error:
     IF AlarmAck = 1 THEN
         ERROR := 0;
         AlarmTrig := FALSE;
-        // Als deur dicht, ga terug naar waar je was, anders Idle
         IF DoorClosed THEN
             State := StateBeforeError;
         ELSE

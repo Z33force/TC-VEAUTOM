@@ -36,8 +36,13 @@ VAR_OUTPUT
     AutoRunning   : BOOL;
     ActiveCmd     : INT;  // 0 none, 1 collect, 2 empty, 3 reset, 4 stack, 5 stop
 END_VAR
+	
+	VAR
+	AllDoorsClosed : BOOL;
+	SafetyTrip      : BOOL;
+	SafetyLatch     : BOOL;
+	SafetyAck       : BOOL; // HMI button
 
-VAR
     rCollect : R_TRIG;
     rEmpty   : R_TRIG;
     rReset   : R_TRIG;
@@ -56,8 +61,25 @@ VAR
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// Safety
-stacker(DoorClosed:= Door1Closed);
-SafetyPaused := (NOT Door1Closed) OR (NOT Door2Closed) OR (EStop);
+AllDoorsClosed := Door1Closed AND Door2Closed;
+SafetyTrip := (NOT AllDoorsClosed) OR (EStop);
+
+IF SafetyTrip THEN
+    SafetyLatch := TRUE;
+END_IF
+
+IF SafetyAck AND NOT SafetyTrip THEN
+    SafetyLatch := FALSE;
+END_IF
+
+SafetyPaused := SafetyTrip OR SafetyLatch;
+
+// Pass combined safety into stacker
+stacker(
+    DoorClosed := AllDoorsClosed,
+    EStopOk := NOT EStop,
+    SafetyHold := SafetyLatch
+);
 
 IF SafetyPaused THEN
     Stacker.Stop();
@@ -70,17 +92,20 @@ END_IF
 rCollect(CLK := CmdCollect);
 rEmpty(CLK := CmdEmpty);
 
-
 IF rCollect.Q THEN cmdLatched := 1; END_IF
 IF rEmpty.Q THEN cmdLatched := 2; END_IF
-
 
 // Looping collect mode
 AutoRunning := AutoRun AND NOT SafetyPaused;
 
 // Execute commands
 IF NOT SafetyPaused THEN
-    IF ActiveCmd = 0 THEN
+    // Empty has priority and can interrupt Collect
+    IF rEmpty.Q THEN
+        Stacker.EmptyStack();
+        ActiveCmd := 2;
+        cmdLatched := 0;
+    ELSIF ActiveCmd = 0 THEN
         IF cmdLatched <> 0 THEN
             CASE cmdLatched OF
                 1: Stacker.CollectPallet();
