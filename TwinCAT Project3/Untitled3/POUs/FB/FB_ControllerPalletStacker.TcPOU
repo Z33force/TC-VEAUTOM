@@ -69,15 +69,11 @@ END_IF
 // Edge detect commands
 rCollect(CLK := CmdCollect);
 rEmpty(CLK := CmdEmpty);
-rReset(CLK := CmdReset);
-rStack(CLK := CmdStack);
-rStop(CLK := CmdStop);
+
 
 IF rCollect.Q THEN cmdLatched := 1; END_IF
 IF rEmpty.Q THEN cmdLatched := 2; END_IF
-IF rReset.Q THEN cmdLatched := 3; END_IF
-IF rStack.Q THEN cmdLatched := 4; END_IF
-IF rStop.Q THEN cmdLatched := 5; END_IF
+
 
 // Looping collect mode
 AutoRunning := AutoRun AND NOT SafetyPaused;
@@ -89,9 +85,6 @@ IF NOT SafetyPaused THEN
             CASE cmdLatched OF
                 1: Stacker.CollectPallet();
                 2: Stacker.EmptyStack();
-                3: Stacker.Reset();
-                4: Stacker.StackPallet();
-                5: Stacker.Stop();
             END_CASE
             ActiveCmd := cmdLatched;
             cmdLatched := 0;
