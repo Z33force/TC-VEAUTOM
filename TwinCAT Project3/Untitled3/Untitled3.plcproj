@@ -9,7 +9,7 @@
     <WriteProductVersion>false</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
     <Name>Untitled3</Name>
-    <ProgramVersion>3.1.4026.19</ProgramVersion>
+    <ProgramVersion>3.1.4026.20</ProgramVersion>
     <Application>{46c1a594-a9c4-42bc-aa5f-4b19fdd7d4b6}</Application>
     <TypeSystem>{79860901-8274-4ca3-a4a7-73df8dec1abf}</TypeSystem>
     <Implicit_Task_Info>{cacef55f-6fef-4f7f-bb13-e53adaa147dc}</Implicit_Task_Info>
@@ -18,6 +18,12 @@
     <LibraryReferences>{15624de6-a98d-4212-abae-3c1753f86e6c}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="cansinfunctie\FB_Pusher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="cansinfunctie\FB_Zuignap.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\E_UnitError.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -27,17 +33,12 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_Pusher.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_Zuignap.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="cansinfunctie" />
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
     <Folder Include="VISUs" />
