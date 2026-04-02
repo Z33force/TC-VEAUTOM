@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="ITFGesimuleerdDI" Id="{78acb92f-277c-4702-b5bd-e92f97d32b4b}">
+    <Declaration><![CDATA[INTERFACE ITFGesimuleerdDI
+]]></Declaration>
+    <Property Name="SensorWaarde" Id="{beead022-26ca-4709-af0f-7fabe318762d}">
+      <Declaration><![CDATA[PROPERTY SensorWaarde : bool]]></Declaration>
+      <Get Name="Get" Id="{0326520b-45ca-4bae-9787-a725827f190b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{0aba72d5-1aaf-4a07-a927-834466809ca2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

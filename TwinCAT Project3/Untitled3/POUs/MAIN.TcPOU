@@ -3,11 +3,87 @@
   <POU Name="MAIN" Id="{e6ac291c-7969-41bd-be7a-3bbe0fc2d688}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+testvariabel2 : INT;
+StackerMotor : FB_ServoMotor();
+PalletStacker : FB_PalletStacker();
+Ctrl : FB_ControllerPalletStacker;
+HMI_AutoMode : BOOL;
+HMI_AutoRun  : BOOL;
+
+HMI_AutoDelayPalletBefore : TIME:= T#2S;
+HMI_AutoDelayPalletInLift : TIME:= T#2S;
+HMI_AutoDelayPinsOut      : TIME:= T#1S;
+HMI_AutoDelayPinsIn       : TIME:= T#1S;
+HMI_AutoCycleDelay        : TIME:= T#2S;
+
+DoorClosed : BOOL := 1;
+Door2Closed : BOOL:= 1;
+EStop    : BOOL:= 0;
+
+tester : int := 0;
+	Loopband : FB_temploopband;
+    Pins     : FB_temppalletpins;
+    Lift     : FB_servomotor;
+    AfstandSensor  : FB_AfstandSensor;
+	PalletBufferSensor : FB_LichtSensor;
+	PalletInLiftSensor : FB_lichtSensor;
+	temp2: INT;
+	temp3: E_MotorStatus;
+	temp: INT;
+	temp4: BOOL;
+	temp5: INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//hallo!
-//HOI]]></ST>
+//HOI
+//eigen branch
+//StackerMotor();
+
+//stackermotor.BeweegNaarDoel();
+
+//stackermotor.DoelPositie:= temp5;
+//temp2:= stackermotor.Positie;
+//temp3:= stackermotor.MotorStatus;
+//stackermotor.Enable:= temp4;
+
+
+
+// Decode tester buttons into one‑shot commands
+Ctrl.CmdCollect := (tester = 1);
+Ctrl.CmdEmpty   := (tester = 2);
+Ctrl.CmdReset   := (tester = 3);
+Ctrl.CmdStack   := (tester = 4);
+Ctrl.CmdStop    := (tester = 5);
+
+// Call controller FB
+Ctrl(
+    Stacker := palletstacker,
+    PalletBeforeLift := PalletBufferSensor.SensorWaarde1,
+    PalletInLift := PalletInLiftSensor.SensorWaarde1,
+    PinsOutFb := pins.PinsUit,
+    PinsInFb := pins.PinsIn,
+
+    Door1Closed := DoorClosed,
+    Door2Closed := Door2Closed,
+    EStop := EStop,
+
+    AutoMode := HMI_AutoMode,
+    AutoRun := HMI_AutoRun,
+
+    AutoDelayPalletBefore := HMI_AutoDelayPalletBefore,
+    AutoDelayPalletInLift := HMI_AutoDelayPalletInLift,
+    AutoDelayPinsOut := HMI_AutoDelayPinsOut,
+    AutoDelayPinsIn := HMI_AutoDelayPinsIn,
+    AutoCycleDelay := HMI_AutoCycleDelay
+);
+
+// reset tester after issuing the command
+IF tester <> 0 THEN
+   tester := 0;
+END_IF
+
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="Temp_ITFLoopband" Id="{76e35b7f-ed7b-4848-936f-3291c0e677ac}">
+    <Declaration><![CDATA[INTERFACE Temp_ITFLoopband
+]]></Declaration>
+    <Method Name="Beweeg" Id="{ab9487de-8c7f-4ff0-bb0c-695973b98961}">
+      <Declaration><![CDATA[METHOD Beweeg
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="BeweegInLift" Id="{61375354-0863-4f64-a6ca-a9d5949a13c3}">
+      <Declaration><![CDATA[METHOD BeweegInLift
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Stop" Id="{73cfbbd7-6a2b-4600-b4f3-94fca7ba01b8}">
+      <Declaration><![CDATA[METHOD Stop
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>
