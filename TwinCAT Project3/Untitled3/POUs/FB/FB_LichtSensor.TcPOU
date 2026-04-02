@@ -8,7 +8,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	BHmiPalletSensorSim : BOOL;
-	
+	sensorwaarde1 : BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -23,7 +23,7 @@ PROPERTY SensorWaarde : BOOL
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[BHmiPalletSensorSim:= SensorWaarde;]]></ST>
+          <ST><![CDATA[BHmiPalletSensorSim:= SensorWaarde1;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{b3401fe1-3921-4ebe-bc43-cea8512b372a}">
@@ -31,7 +31,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[SensorWaarde := BHmiPalletSensorSim;
+          <ST><![CDATA[SensorWaarde1 := BHmiPalletSensorSim;
 ]]></ST>
         </Implementation>
       </Set>

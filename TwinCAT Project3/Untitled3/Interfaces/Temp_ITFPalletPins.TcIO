@@ -3,20 +3,14 @@
   <Itf Name="Temp_ITFPalletPins" Id="{b3648339-c988-4d5f-97cd-8a7fdd9c6865}">
     <Declaration><![CDATA[INTERFACE Temp_ITFPalletPins
 ]]></Declaration>
-    <Method Name="Beweegpinsnaarbeneden" Id="{82450bbc-49b3-4bf2-b6bf-e632ecb152d1}">
-      <Declaration><![CDATA[METHOD Beweegpinsnaarbeneden
-VAR_INPUT
-END_VAR
-]]></Declaration>
-    </Method>
     <Method Name="ErinBewegen" Id="{57139f31-177b-4f4d-892d-369d551493be}">
-      <Declaration><![CDATA[METHOD ErinBewegen
+      <Declaration><![CDATA[METHOD ErinBewegen :bool
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="EruitBewegen" Id="{556d00d9-3f23-492c-80b0-4ea7920c6b24}">
-      <Declaration><![CDATA[METHOD EruitBewegen
+      <Declaration><![CDATA[METHOD EruitBewegen :BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>

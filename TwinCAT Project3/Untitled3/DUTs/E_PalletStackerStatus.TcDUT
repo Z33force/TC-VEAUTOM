@@ -8,11 +8,13 @@ TYPE E_PalletStackerStatus :
 (
 	Idle := 0,
 	Collecting:= 1,
-	PinsBewegen:= 2,
+	PinsUitBewegen:= 2,
 	LiftBewegen:= 3,
 	Omwisselen:= 4,
 	Legen:= 5,
-	Error:= 6
+	Error:= 6,
+	PalletLaden:= 7,
+	PinsInBewegen:= 8
 );
 END_TYPE
 ]]></Declaration>

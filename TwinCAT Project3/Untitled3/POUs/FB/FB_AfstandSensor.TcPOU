@@ -22,7 +22,8 @@ PROPERTY SensorWaarde : INT
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[IHmiStackerAfstandSensorSim:= SensorWaarde;]]></ST>
+          <ST><![CDATA[
+SensorWaarde := IHmiStackerAfstandSensorSim;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{e3a6cffd-5cb8-4d70-9c43-fc42aff29e98}">
@@ -30,7 +31,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[SensorWaarde := IHmiStackerAfstandSensorSim;]]></ST>
+          <ST><![CDATA[IHmiStackerAfstandSensorSim:= SensorWaarde;]]></ST>
         </Implementation>
       </Set>
     </Property>

@@ -157,6 +157,9 @@
     <Content Include="Content\Palletizer1.content">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Content\Settings.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Content\Simu1.content">
       <SubType>Content</SubType>
     </Content>

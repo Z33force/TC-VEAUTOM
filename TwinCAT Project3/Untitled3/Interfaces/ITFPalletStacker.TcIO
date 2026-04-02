@@ -4,13 +4,13 @@
     <Declaration><![CDATA[INTERFACE ITFPalletStacker
 ]]></Declaration>
     <Method Name="CollectPallet" Id="{42c406db-0f81-4711-818d-aef16ab72e5b}">
-      <Declaration><![CDATA[METHOD CollectPallet
+      <Declaration><![CDATA[METHOD CollectPallet : bool
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="EmptyStack" Id="{0ca567c3-45d2-4648-856b-671c4db26acb}">
-      <Declaration><![CDATA[METHOD EmptyStack
+      <Declaration><![CDATA[METHOD EmptyStack : bool
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -22,7 +22,7 @@ END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="StackPallet" Id="{0ce9402f-c1ee-4b57-83de-8b71bd4726d9}">
-      <Declaration><![CDATA[METHOD StackPallet
+      <Declaration><![CDATA[METHOD StackPallet : bool
 VAR_INPUT
 END_VAR
 ]]></Declaration>
