@@ -2,32 +2,32 @@
   "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.3.277/runtimes/native1.12-tchmi/Schema/TchmiConfig.Schema.json",
   "basePath": "./Beckhoff.TwinCAT.HMI.Framework",
   "scaleMode": "None",
-  "startupView": "Content/Desktop.view",
+  "startupView": null,
   "loginPage": "",
   "splash": {
     "versionSource": "Framework"
   },
   "projectVersion": "1.0.0.0",
   "tcHmiServer": {
-    "websocketIntervalTime": 500,
+    "websocketIntervalTime": 20000,
     "websocketTimeout": 20000,
     "websocketSystemTimeout": 60000,
     "websocketSubscriptionMode": null,
     "disableOptionalSystemSubscriptions": false
   },
-  "activeTheme": "Base",
+  "activeTheme": "",
   "themes": {
     "Base-Dark": {
       "resources": [
         {
-          "name": "Themes/Base-Dark/Base-DarkStyle.css",
-          "description": "",
-          "type": "Stylesheet"
-        },
-        {
           "name": "Themes/Base-Dark/Base-Dark.theme",
           "description": "",
           "type": "ThemedValues"
+        },
+        {
+          "name": "Themes/Base-Dark/Base-DarkStyle.css",
+          "description": "",
+          "type": "Stylesheet"
         }
       ],
       "replacesThemeForControls": [],
@@ -122,8 +122,8 @@
   "disableLoadingOptimization": false,
   "creatorSettings": {
     "viewport": {
-      "defaultWidth": 800,
-      "defaultHeight": 600
+      "defaultWidth": 0,
+      "defaultHeight": 0
     }
   },
   "binding": {
@@ -171,23 +171,24 @@
       "url": "KeyboardLayouts/US - compact.keyboard.json"
     }
   ],
+  "tcSpeech": {},
   "systemKeyboard": {
     "providerName": "",
     "autoOpen": false,
     "projectKeyboardMapping": {
       "de": {
-        "text": "KeyboardLayouts/German - compact.keyboard.json",
-        "decimal": "KeyboardLayouts/Numpad (plusminus).keyboard.json",
+        "text": "",
+        "decimal": "",
         "numeric": ""
       },
       "en": {
-        "text": "KeyboardLayouts/US - compact.keyboard.json",
-        "decimal": "KeyboardLayouts/Numpad (plusminus).keyboard.json",
+        "text": "",
+        "decimal": "",
         "numeric": ""
       }
     }
   },
   "systemPopups": {
-    "providerName": "Beckhoff.TcHmiPopups"
+    "providerName": ""
   }
 }
