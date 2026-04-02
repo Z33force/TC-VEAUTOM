@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="ITFGesimuleerdAO" Id="{226360d6-bab2-4a87-8d8f-b6f553092b9e}">
+    <Declaration><![CDATA[INTERFACE ITFGesimuleerdAO
+]]></Declaration>
+    <Property Name="SensorWaarde" Id="{b9bb470e-cd44-4777-ac5d-a8bc14a96ec4}">
+      <Declaration><![CDATA[PROPERTY SensorWaarde : int]]></Declaration>
+      <Get Name="Get" Id="{20ae6825-3688-4d4c-b8fc-fb0d9689b3f5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{4a40e179-0da2-40b7-827c-57537548b085}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

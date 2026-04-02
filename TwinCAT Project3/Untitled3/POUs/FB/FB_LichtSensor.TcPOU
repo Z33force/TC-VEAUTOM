@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_LichtSensor" Id="{2a2763db-7b58-400d-b689-256626899efb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LichtSensor IMPLEMENTS ITFGesimuleerdDO
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	BHmiPalletSensorSim : BOOL;
+	sensorwaarde1 : BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="SensorWaarde" Id="{ceea8ccb-d715-4f5f-bef2-cc7a9aa76013}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY SensorWaarde : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{2a076388-55d1-4080-9c55-60bdd5547358}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[BHmiPalletSensorSim:= SensorWaarde1;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b3401fe1-3921-4ebe-bc43-cea8512b372a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SensorWaarde1 := BHmiPalletSensorSim;
+]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

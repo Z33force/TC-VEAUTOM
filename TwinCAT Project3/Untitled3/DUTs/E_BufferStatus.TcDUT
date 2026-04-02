@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="E_BufferStatus" Id="{516ca905-223d-4b91-9be4-c821b9885375}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_BufferStatus :
+(
+	Leeg := 0,
+	DeelsGevuld := 1,
+	BijnaVol := 2,
+	vol:= 3
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

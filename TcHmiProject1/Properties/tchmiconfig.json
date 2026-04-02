@@ -2,32 +2,32 @@
   "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.3.277/runtimes/native1.12-tchmi/Schema/TchmiConfig.Schema.json",
   "basePath": "./Beckhoff.TwinCAT.HMI.Framework",
   "scaleMode": "None",
-  "startupView": "Desktop.view",
+  "startupView": null,
   "loginPage": "",
   "splash": {
     "versionSource": "Framework"
   },
   "projectVersion": "1.0.0.0",
   "tcHmiServer": {
-    "websocketIntervalTime": 500,
+    "websocketIntervalTime": 20000,
     "websocketTimeout": 20000,
     "websocketSystemTimeout": 60000,
     "websocketSubscriptionMode": null,
     "disableOptionalSystemSubscriptions": false
   },
-  "activeTheme": "Base",
+  "activeTheme": "",
   "themes": {
     "Base-Dark": {
       "resources": [
         {
-          "name": "Themes/Base-Dark/Base-DarkStyle.css",
-          "description": "",
-          "type": "Stylesheet"
-        },
-        {
           "name": "Themes/Base-Dark/Base-Dark.theme",
           "description": "",
           "type": "ThemedValues"
+        },
+        {
+          "name": "Themes/Base-Dark/Base-DarkStyle.css",
+          "description": "",
+          "type": "Stylesheet"
         }
       ],
       "replacesThemeForControls": [],
@@ -59,10 +59,46 @@
   ],
   "userControls": [],
   "controls": [],
-  "content": [],
+  "content": [
+    {
+      "url": "Content/Content1.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Content/Palletizer1.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Content/Settings.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Content/Simu1.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Content/Startpage.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    }
+  ],
   "views": [
     {
-      "url": "Desktop.view",
+      "url": "Content/Desktop.view",
       "preload": false,
       "keepAlive": false,
       "preloadBindings": false
@@ -86,8 +122,8 @@
   "disableLoadingOptimization": false,
   "creatorSettings": {
     "viewport": {
-      "defaultWidth": 800,
-      "defaultHeight": 600
+      "defaultWidth": 0,
+      "defaultHeight": 0
     }
   },
   "binding": {
@@ -95,6 +131,13 @@
     "symbolWriteError": "ReadBack"
   },
   "packages": [
+    {
+      "name": "Beckhoff.TwinCAT.HMI.BaseTemplate",
+      "basePath": "/Beckhoff.TwinCAT.HMI.BaseTemplate",
+      "symbols": {
+        "package": {}
+      }
+    },
     {
       "name": "Beckhoff.TwinCAT.HMI.Controls",
       "basePath": "/Beckhoff.TwinCAT.HMI.Controls",
@@ -128,23 +171,24 @@
       "url": "KeyboardLayouts/US - compact.keyboard.json"
     }
   ],
+  "tcSpeech": {},
   "systemKeyboard": {
     "providerName": "",
     "autoOpen": false,
     "projectKeyboardMapping": {
       "de": {
-        "text": "KeyboardLayouts/German - compact.keyboard.json",
-        "decimal": "KeyboardLayouts/Numpad (plusminus).keyboard.json",
+        "text": "",
+        "decimal": "",
         "numeric": ""
       },
       "en": {
-        "text": "KeyboardLayouts/US - compact.keyboard.json",
-        "decimal": "KeyboardLayouts/Numpad (plusminus).keyboard.json",
+        "text": "",
+        "decimal": "",
         "numeric": ""
       }
     }
   },
   "systemPopups": {
-    "providerName": "Beckhoff.TcHmiPopups"
+    "providerName": ""
   }
 }
