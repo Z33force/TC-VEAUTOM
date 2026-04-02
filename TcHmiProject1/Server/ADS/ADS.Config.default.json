@@ -22,7 +22,7 @@
     "RUNTIMES": {
         "PLC1": {
             "ENABLED": true,
-            "NETID": "127.0.0.1.1.1",
+            "NETID": "199.4.42.250.1.1",
             "PORT": 851,
             "READ_ONLY": false,
             "SYMBOLS": {},
@@ -32,7 +32,7 @@
     "RUNTIME_STATE_CHECK_INTERVAL": "PT2S",
     "RUNTIME_STATE_CHECK_TIMEOUT": "PT5S",
     "SUM_REQUEST_LIMIT": 500,
-    "TIMEOUT": "PT1S",
+    "TIMEOUT": "PT5S",
     "VISIBLE_RUNTIME_PORTS": [
         301,
         302,

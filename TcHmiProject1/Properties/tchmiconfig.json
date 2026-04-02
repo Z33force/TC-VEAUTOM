@@ -2,7 +2,7 @@
   "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.3.277/runtimes/native1.12-tchmi/Schema/TchmiConfig.Schema.json",
   "basePath": "./Beckhoff.TwinCAT.HMI.Framework",
   "scaleMode": "None",
-  "startupView": "Desktop.view",
+  "startupView": "Content/Desktop.view",
   "loginPage": "",
   "splash": {
     "versionSource": "Framework"
@@ -59,10 +59,46 @@
   ],
   "userControls": [],
   "controls": [],
-  "content": [],
+  "content": [
+    {
+      "url": "Content/Content1.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Content/Palletizer1.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Content/Settings.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Content/Simu1.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Content/Startpage.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    }
+  ],
   "views": [
     {
-      "url": "Desktop.view",
+      "url": "Content/Desktop.view",
       "preload": false,
       "keepAlive": false,
       "preloadBindings": false
@@ -95,6 +131,13 @@
     "symbolWriteError": "ReadBack"
   },
   "packages": [
+    {
+      "name": "Beckhoff.TwinCAT.HMI.BaseTemplate",
+      "basePath": "/Beckhoff.TwinCAT.HMI.BaseTemplate",
+      "symbols": {
+        "package": {}
+      }
+    },
     {
       "name": "Beckhoff.TwinCAT.HMI.Controls",
       "basePath": "/Beckhoff.TwinCAT.HMI.Controls",

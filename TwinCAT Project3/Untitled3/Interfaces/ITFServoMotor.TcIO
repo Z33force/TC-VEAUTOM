@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="ITFServoMotor" Id="{c243c482-42c3-4a76-81f1-ac3a4417e219}">
+    <Declaration><![CDATA[INTERFACE ITFServoMotor
+]]></Declaration>
+    <Method Name="BeweegNaarDoel" Id="{4f8b0714-7117-4f8d-913a-bddf18ac46d8}">
+      <Declaration><![CDATA[METHOD BeweegNaarDoel
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="DoelPositie" Id="{31d37aac-f1b5-4167-91ef-7526e5a2f6a7}">
+      <Declaration><![CDATA[PROPERTY DoelPositie : int]]></Declaration>
+      <Get Name="Get" Id="{80271187-f4d1-460e-9e28-3f06751d31ce}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{971a9533-2fc0-4d46-9cdc-4f2d66c70113}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Enable" Id="{4be37b4f-749a-4039-98aa-f5959092c4b6}">
+      <Declaration><![CDATA[PROPERTY Enable : bool]]></Declaration>
+      <Get Name="Get" Id="{86ea879f-c45e-4b77-917a-b557a933a2cd}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{81cdb175-7ab9-4769-9b80-89238722f406}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="MotorStatus" Id="{492d51db-7c93-4c98-97ea-c3e5f3bee063}">
+      <Declaration><![CDATA[PROPERTY MotorStatus : E_motorstatus]]></Declaration>
+      <Get Name="Get" Id="{89338205-68b2-4b93-9a1e-6cdaff73aa22}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{1a191784-4969-45e1-9f74-a10fa860c5ce}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Positie" Id="{d3d21827-b776-4526-9cf4-5b9802ab2987}">
+      <Declaration><![CDATA[PROPERTY Positie : int]]></Declaration>
+      <Get Name="Get" Id="{9c055e2c-96fa-4e41-9eaf-6112a7c3e721}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

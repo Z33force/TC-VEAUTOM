@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_temppalletpins" Id="{24283af4-cc3a-435c-bd24-eb4b86f3a12e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_temppalletpins  IMPLEMENTS temp_ITFPalletPins
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	PinsIn :BOOL:= FALSE;
+	PinsUit :BOOL := TRUE;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Beweegpinsnaarbeneden" Id="{ceb393c4-911a-42bd-8235-2f86e39d1134}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD Beweegpinsnaarbeneden : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ErinBewegen" Id="{d6ab7a25-1342-4973-aed4-2f65cb559662}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD ErinBewegen : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="EruitBewegen" Id="{51ecdb2a-4d09-46c6-9136-f03523cff8d9}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD EruitBewegen : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
