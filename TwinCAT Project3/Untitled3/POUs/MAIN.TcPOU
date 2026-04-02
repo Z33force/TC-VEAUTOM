@@ -3,11 +3,32 @@
   <POU Name="MAIN" Id="{e6ac291c-7969-41bd-be7a-3bbe0fc2d688}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-END_VAR
-]]></Declaration>
+    // Function blocks (equipment modules volgens ISA-88)
+    Zuignap : FB_Zuignap;
+    Pusher  : FB_Pusher;
+
+    // Configuratie (instelbare parameters)
+    CfgZuignap : ST_UnitCfg := (
+        tMoveTimeout := T#3s,
+        tVacTimeout  := T#2s,
+        tBlowTime    := T#300ms
+    );
+
+    CfgPusher : ST_UnitCfg := (
+        tMoveTimeout := T#2s,
+        tVacTimeout  := T#0s,
+        tBlowTime    := T#0s
+    );
+
+    // simpele besturing (later via HMI)
+    StartCycle : BOOL;
+    ResetFault : BOOL;
+
+    // sequentie
+    Step : INT := 0;
+END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//hallo!
-//HOI]]></ST>
+      <ST><![CDATA[]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
