@@ -8,6 +8,14 @@
     "name": "Home"
   },
   {
+    "content": "Content/Trends.content",
+    "name": "Trends"
+  },
+  {
+    "content": "Content/Meldingen.content",
+    "name": "Meldingen"
+  },
+  {
     "content": "Content/Settings.content",
     "name": "Settings"
   },
@@ -26,4 +34,32 @@
 </div>
 
 
+<div id="TcHmiEventLine_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEventLine" data-tchmi-height="40" data-tchmi-height-unit="px" data-tchmi-left="520" data-tchmi-left-unit="px" data-tchmi-server-interval="1000" data-tchmi-top="717" data-tchmi-top-unit="px" data-tchmi-width="434" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-filter" type="application/json">
+[
+  {
+    "path": "domain",
+    "comparator": "==",
+    "value": "TcHmiEventLogger"
+  },
+  {
+    "logic": "OR"
+  },
+  {
+    "path": "domain",
+    "comparator": "==",
+    "value": "TcHmiAlarm"
+  }
+]
+</script>
+<script data-tchmi-target-attribute="data-tchmi-sorting" type="application/json">
+[
+  {
+    "name": "timeRaised",
+    "order": "Descending"
+  }
+]
+</script>
+
+</div>
 </div>

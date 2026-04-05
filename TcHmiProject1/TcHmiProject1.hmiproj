@@ -137,6 +137,7 @@
     <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
     <Folder Include="Content" />
+    <Folder Include="Server\TcHmiSqliteHistorize" />
     <Folder Include="Themes" />
     <Folder Include="Themes\Base-Dark\Images\" />
     <Folder Include="Themes\Base\" />
@@ -151,10 +152,13 @@
     <Content Include="Content\Content1.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Content\Desktop.view">
+    <Content Include="Content\Trends.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Content\Palletizer1.content">
+    <Content Include="Content\Meldingen.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Content\Desktop.view">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Content\Settings.content">
@@ -179,6 +183,15 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteHistorize\TcHmiSqliteHistorize.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteHistorize\TcHmiSqliteHistorize.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteHistorize\TcHmiSqliteHistorize.Storage.json">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.default.json">
