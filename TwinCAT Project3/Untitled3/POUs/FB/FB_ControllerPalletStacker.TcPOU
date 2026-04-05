@@ -93,7 +93,11 @@ rCollect(CLK := CmdCollect);
 rEmpty(CLK := CmdEmpty);
 
 IF rCollect.Q THEN cmdLatched := 1; END_IF
-IF rEmpty.Q THEN cmdLatched := 2; END_IF
+IF rEmpty.Q THEN
+    //Stacker.EmptyStack();
+    //ActiveCmd := 2;
+    cmdLatched := 0;
+END_IF
 
 // Looping collect mode
 AutoRunning := AutoRun AND NOT SafetyPaused;

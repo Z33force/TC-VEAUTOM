@@ -199,6 +199,8 @@ E_PalletStackerStatus.Collecting:
         ELSE
             AlarmTrig := TRUE;
         END_IF
+		
+
 
     // 2) Zorg dat lift klaar is (geen pins uit, juiste hoogte)
     ELSIF PalletLoadedBeforeLift AND NOT readyfornext THEN
@@ -233,11 +235,15 @@ E_PalletStackerStatus.Collecting:
         ELSE
             AlarmTrig := TRUE;
         END_IF
+		
 
-    ELSE
-        Loopband.Stop();
-        nextstep := 'Collecting: buffer bezet of wacht';
-        AlarmTrig := FALSE;
+	
+	ELSIF EBufferStatus = E_BufferStatus.vol OR EBufferStatus = E_BufferStatus.BijnaVol THEN
+    Loopband.Stop();
+    nextstep := 'Collecting: buffer vol, cyclus stopt';
+    AlarmTrig := FALSE;
+    CycleActive := FALSE;
+    State := E_PalletStackerStatus.Idle;
     END_IF
 
 //==================== Pins Uit Bewegen ====================
