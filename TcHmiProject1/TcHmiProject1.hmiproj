@@ -137,6 +137,7 @@
     <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
     <Folder Include="Content" />
+    <Folder Include="Server\TcHmiEventLogger" />
     <Folder Include="Server\TcHmiSqliteHistorize" />
     <Folder Include="Themes" />
     <Folder Include="Themes\Base-Dark\Images\" />
@@ -170,16 +171,19 @@
     <Content Include="Content\Startpage.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Server\ADS\ADS.Config.test.json">
+    <Content Include="Server\TcHmiEventLogger\TcHmiEventLogger.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiEventLogger\TcHmiEventLogger.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiEventLogger\TcHmiEventLogger.Storage.json">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Config.default.json">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Config.remote.json">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Server\TcHmiLua\TcHmiLua.Config.test.json">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Storage.json">
@@ -200,22 +204,13 @@
     <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.remote.json">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.test.json">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Storage.json">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Server\TcHmiSrv\TcHmiSrv.Config.test.json">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.default.json">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.remote.json">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.test.json">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Storage.json">

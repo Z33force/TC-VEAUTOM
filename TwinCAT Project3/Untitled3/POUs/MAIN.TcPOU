@@ -16,6 +16,8 @@ HMI_AutoDelayPinsOut      : TIME:= T#1S;
 HMI_AutoDelayPinsIn       : TIME:= T#1S;
 HMI_AutoCycleDelay        : TIME:= T#2S;
 
+
+
 DoorClosed : BOOL := 1;
 Door2Closed : BOOL:= 1;
 EStop    : BOOL:= 0;

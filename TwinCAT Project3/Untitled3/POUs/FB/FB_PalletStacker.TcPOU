@@ -67,6 +67,12 @@ VAR
 	buffervolstring: STRING;
 	StateChanged: BOOL;
 	StatePrev: E_PalletStackerStatus;
+	
+	fblogger : FB_TcEventLogger;
+	fbalarm : FB_tcalarm;
+	fbsource: FB_tcsourceinfo;
+	fbargument: fb_tcarguments;
+
 END_VAR
 
 //note
@@ -95,6 +101,11 @@ IF NOT RunPermit THEN
     Loopband.Stop();
     lift.Enable := 0;
     AlarmTrig := FALSE;
+	
+	fbsource.Clear();
+	fbsource.sName := 'Noodstop';
+	fbalarm.CreateEx(tc_events.StackerEvents.Noodstop, TRUE, fbsource);
+	fbalarm.Raise(0);
 ELSE
     lift.Enable := 1;
 END_IF
@@ -110,6 +121,12 @@ IF ErrorTimer.Q AND State <> E_PalletStackerStatus.Error THEN
     StateBeforeError := State;
     State := E_PalletStackerStatus.Error;
     AlarmTrig := FALSE;
+	
+	fbsource.Clear();
+	fbsource.sName := 'error timer';
+	fbalarm.CreateEx(tc_events.StackerEvents.Vastgelopen, TRUE, fbsource);
+	fbalarm.Raise(0);
+	
 END_IF
 
 // Bufferstatus bepalen
@@ -184,7 +201,12 @@ E_PalletStackerStatus.Collecting:
         nextstep := 'Collecting: deur open, pauze';
         Loopband.Stop();
         AlarmTrig := FALSE;
-
+		
+		fbsource.Clear();
+		fbsource.sName := 'deur open';
+		fbalarm.CreateEx(tc_events.StackerEvents.Door1Open, TRUE, fbsource);
+	    fbalarm.Raise(0);
+		
     // 1) Breng pallet naar voor de lift
     ELSIF (EBufferStatus = E_BufferStatus.Leeg OR EBufferStatus = E_BufferStatus.DeelsGevuld)
           AND NOT PalletLoadedBeforeLift THEN
@@ -378,6 +400,7 @@ E_PalletStackerStatus.Legen:
 E_PalletStackerStatus.Error:
     nextstep := 'ERROR: stop alles, wacht reset';
     ERROR := 1;
+	
 
     Loopband.Stop();
     lift.Enable := 0;
@@ -398,6 +421,13 @@ E_PalletStackerStatus.Error:
         END_IF
     END_IF
 END_CASE
+
+
+IF (state <> E_PalletStackerStatus.Error) AND DoorClosed AND EStopOk AND NOT SafetyHold THEN
+    fbsource.Clear();
+    fblogger.ClearAllAlarms();
+END_IF
+
 ]]></ST>
     </Implementation>
     <Method Name="CollectPallet" Id="{2e0f8c98-5db4-438b-8f55-10439f8e8dd0}">
