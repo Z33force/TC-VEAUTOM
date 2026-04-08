@@ -9,7 +9,7 @@
     <WriteProductVersion>false</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
     <Name>Untitled3</Name>
-    <ProgramVersion>3.1.4026.20</ProgramVersion>
+    <ProgramVersion>3.1.4026.21</ProgramVersion>
     <Application>{46c1a594-a9c4-42bc-aa5f-4b19fdd7d4b6}</Application>
     <TypeSystem>{79860901-8274-4ca3-a4a7-73df8dec1abf}</TypeSystem>
     <Implicit_Task_Info>{cacef55f-6fef-4f7f-bb13-e53adaa147dc}</Implicit_Task_Info>
@@ -28,6 +28,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\E_PalletStackerStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_Point.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Interfaces\ITFGesimuleerdDI.TcIO">
@@ -102,7 +105,8 @@
     <PlaceholderReference Include="Tc3_EventLogger">
       <DefaultResolution>Tc3_EventLogger, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_EventLogger</Namespace>
-      <Condition> </Condition>
+      <Condition>
+      </Condition>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>

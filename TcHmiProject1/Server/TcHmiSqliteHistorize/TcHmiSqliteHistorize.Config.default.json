@@ -13,6 +13,12 @@
             "maxEntries": 100,
             "recordingEnabled": true,
             "rowLimit": 100000
+        },
+        "ADS.PLC1.MAIN.PalletStacker.pallethoogte": {
+            "interval": "PT1S",
+            "maxEntries": 10000,
+            "recordingEnabled": true,
+            "rowLimit": 100000
         }
     },
     "inMemory": false,

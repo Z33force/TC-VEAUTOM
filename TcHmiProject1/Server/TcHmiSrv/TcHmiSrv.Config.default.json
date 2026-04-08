@@ -29,6 +29,23 @@
     "DEFAULTTIMEZONE": "client",
     "DEFINITIONS": {
         "ADS": {
+            "ADS-PLC1.ARRAY_1..2_1..300_OF-ST_Point": {
+                "displayAsMatrix": 2,
+                "items": {
+                    "allowMapping": false,
+                    "items": {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_Point"
+                    },
+                    "maxItems": 300,
+                    "minItems": 300,
+                    "startOffset": 1,
+                    "type": "array"
+                },
+                "maxItems": 2,
+                "minItems": 2,
+                "startOffset": 1,
+                "type": "array"
+            },
             "ADS-PLC1.E_BufferStatus": {
                 "attributes": {
                     "generate_implicit_init_function": "",
@@ -189,6 +206,36 @@
                 "attributes": {
                     "TcPlcInterfaceType": ""
                 },
+                "type": "object"
+            },
+            "ADS-PLC1.ST_Point": {
+                "additionalProperties": false,
+                "properties": {
+                    "x": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/INT"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "y": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/INT"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "x",
+                    "y"
+                ],
                 "type": "object"
             }
         }
@@ -1628,6 +1675,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.MAIN.PalletStacker.TrendData": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::TrendData",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.ARRAY_1..2_1..300_OF-ST_Point"
+                    },
+                    {
+                        "propertyOrder": 9
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.MAIN.PalletStacker.buffervolstring": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -1640,6 +1704,23 @@
                     },
                     {
                         "propertyOrder": 39
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.pallethoogte": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::pallethoogte",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 6
                     }
                 ]
             },
@@ -5186,7 +5267,9 @@
                 "ADS.PLC1.MAIN.PalletStacker.Pins.gelukt2": 3,
                 "ADS.PLC1.MAIN.PalletStacker.State": 3,
                 "ADS.PLC1.MAIN.PalletStacker.StateString": 3,
+                "ADS.PLC1.MAIN.PalletStacker.TrendData": 3,
                 "ADS.PLC1.MAIN.PalletStacker.buffervolstring": 3,
+                "ADS.PLC1.MAIN.PalletStacker.pallethoogte": 3,
                 "ADS.PLC1.MAIN.tester": 3,
                 "ChangeUserSettings": 3,
                 "ConfirmAlarm": 3,

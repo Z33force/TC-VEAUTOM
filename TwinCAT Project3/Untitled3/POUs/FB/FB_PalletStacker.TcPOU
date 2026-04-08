@@ -19,7 +19,14 @@ VAR CONSTANT
 END_VAR
 
 VAR
+    TrendData : ARRAY[1..2, 1..300] OF ST_Point;
 
+    TrendIndex : INT := 1;
+    TrendX     : INT := 0;
+	StateInt   : INT;   // mapped enum -> INT
+    PalletCnt  : INT;   // your pallet count/height
+	
+    tTrend     : TON;
 	RunPermit  : BOOL; // internal
 	StateBeforeError : E_PalletStackerStatus;
 	LegenDone        : BOOL;
@@ -125,6 +132,7 @@ IF ErrorTimer.Q AND State <> E_PalletStackerStatus.Error THEN
 	fbsource.Clear();
 	fbsource.sName := 'error timer';
 	fbalarm.CreateEx(tc_events.StackerEvents.Vastgelopen, TRUE, fbsource);
+	// hoe kijk je als dit gebeurt
 	fbalarm.Raise(0);
 	
 END_IF
@@ -424,8 +432,30 @@ END_CASE
 
 
 IF (state <> E_PalletStackerStatus.Error) AND DoorClosed AND EStopOk AND NOT SafetyHold THEN
-    fbsource.Clear();
-    fblogger.ClearAllAlarms();
+    //fbsource.Clear();
+    //fblogger.ClearAllAlarms();
+END_IF
+
+// 1-second tick
+tTrend(IN := TRUE, PT := T#1S);
+IF tTrend.Q THEN
+    tTrend(IN := FALSE);
+
+    // Convert enum to INT
+    StateInt := state; // or explicit mapping if you prefer
+
+    TrendData[1, TrendIndex].x := TrendX;
+    TrendData[1, TrendIndex].y := StateInt;
+
+    TrendData[2, TrendIndex].x := TrendX;
+    TrendData[2, TrendIndex].y := (AfstandSensor.SensorWaarde / 10);
+
+    TrendIndex := TrendIndex + 1;
+    IF TrendIndex > 300 THEN
+        TrendIndex := 1;
+    END_IF
+
+    TrendX := TrendX + 1;
 END_IF
 
 ]]></ST>
