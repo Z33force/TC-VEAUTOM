@@ -1,42 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="FB_temppalletpins" Id="{24283af4-cc3a-435c-bd24-eb4b86f3a12e}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_temppalletpins  IMPLEMENTS temp_ITFPalletPins
+  <POU Name="fbTemploopband" Id="{fd55b582-6712-48f5-a30e-f1427c01e92c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK fbTemploopband IMPLEMENTS temp_ITFloopband
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	PinsIn :BOOL:= FALSE;
-	PinsUit :BOOL := TRUE;
+	LoopbandActief : BOOL;
 	
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Method Name="Beweegpinsnaarbeneden" Id="{ceb393c4-911a-42bd-8235-2f86e39d1134}">
+    <Method Name="Beweeg" Id="{bfbb8d19-dde9-4864-ab11-58c8687d1a19}">
       <Declaration><![CDATA[{warning 'Add method implementation '}
-METHOD Beweegpinsnaarbeneden : bool
+METHOD Beweeg
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[LoopbandActief:= 1;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="BeweegInLift" Id="{3e667e89-6b60-4a4e-8b87-7087f7f507b1}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD BeweegInLift
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="ErinBewegen" Id="{d6ab7a25-1342-4973-aed4-2f65cb559662}">
+    <Method Name="Stop" Id="{67bd58cd-8dd1-4983-a51f-8b3ad74bddac}">
       <Declaration><![CDATA[{warning 'Add method implementation '}
-METHOD ErinBewegen : bool
+METHOD Stop
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="EruitBewegen" Id="{51ecdb2a-4d09-46c6-9136-f03523cff8d9}">
-      <Declaration><![CDATA[{warning 'Add method implementation '}
-METHOD EruitBewegen : bool
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[LoopbandActief:= 0;]]></ST>
       </Implementation>
     </Method>
   </POU>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="FB_LichtSensor" Id="{2a2763db-7b58-400d-b689-256626899efb}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_LichtSensor IMPLEMENTS ITFGesimuleerdDO
+  <POU Name="fbLichtSensor" Id="{2a2763db-7b58-400d-b689-256626899efb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK fbLichtSensor IMPLEMENTS ITFGesimuleerdDO
 VAR_INPUT
 END_VAR
 VAR_OUTPUT

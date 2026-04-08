@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="FB_ServoMotor" Id="{63955412-bcd3-4783-ab58-d217a713d49f}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_ServoMotor implements ITFServoMotor
+  <POU Name="fbStackerServo" Id="{63955412-bcd3-4783-ab58-d217a713d49f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK fbStackerServo implements ITFServoMotor
 VAR_INPUT
 END_VAR
 VAR_OUTPUT

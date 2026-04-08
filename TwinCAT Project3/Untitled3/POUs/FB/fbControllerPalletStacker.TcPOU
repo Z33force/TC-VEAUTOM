@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="fbControllerPalletStacker" Id="{d94f743d-0e17-40db-8373-d42e5b0997e7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK fbControllerPalletStacker
+VAR_INPUT
+    bCmdCollect     : BOOL;
+    bCmdLegen       : BOOL;
+
+    bDeur1Dicht    : BOOL;
+    bDeur2Dicht    : BOOL;
+    bNoodstop        : BOOL;
+
+END_VAR
+
+VAR_IN_OUT
+    fbStacker           : fbPalletStacker(DoorClosed:= bDeur1Dicht); // change to your actual FB type
+END_VAR
+
+VAR_OUTPUT
+    bVeiligheidsPauze  : BOOL;
+    iActiveCmd     : INT;  
+END_VAR
+	
+	VAR
+	bAlleDeurenDicht : BOOL;
+	bVeiligheidTrip      : BOOL;
+	bVeiligheidsLatch     : BOOL;
+	BVeiligheidAck       : BOOL; // HMI button
+    rCollect : R_TRIG;
+    rLegen   : R_TRIG;
+    iCmdLatch : INT;
+
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Safety
+bAlleDeurenDicht := bDeur1Dicht AND bDeur2Dicht;
+bVeiligheidTrip := (NOT bAlleDeurenDicht) OR (bNoodstop);
+
+IF bVeiligheidTrip THEN
+    bVeiligheidsLatch := TRUE;
+END_IF
+
+IF BVeiligheidAck AND NOT bVeiligheidTrip THEN
+    bVeiligheidsLatch := FALSE;
+END_IF
+
+bVeiligheidsPauze := bVeiligheidTrip OR bVeiligheidsLatch;
+
+// Pass combined safety into stacker
+fbStacker(
+    bDeurDicht := bAlleDeurenDicht,
+    bNoodstopOk := NOT bNoodstop,
+    bVeiligheidHold := bVeiligheidsLatch
+);
+
+IF bVeiligheidsPauze THEN
+    fbStacker.Stop();
+    iCmdLatch := 0;
+    iActiveCmd := 0;
+END_IF
+
+// Edge detect commands
+rCollect(CLK := bCmdCollect);
+rLegen(CLK := bCmdLegen);
+
+IF rCollect.Q THEN iCmdLatch := 1; END_IF
+IF rLegen.Q THEN
+    //Stacker.EmptyStack();
+    //ActiveCmd := 2;
+    iCmdLatch := 0;
+END_IF
+
+// Execute commands
+IF NOT bVeiligheidsPauze THEN
+    // Empty has priority and can interrupt Collect
+    IF rLegen.Q THEN
+        fbStacker.EmptyStack();
+        iActiveCmd := 2;
+        iCmdLatch := 0;
+    ELSIF iActiveCmd = 0 THEN
+        IF iCmdLatch <> 0 THEN
+            CASE iCmdLatch OF
+                1: fbStacker.CollectPallet();
+                2: fbStacker.EmptyStack();
+            END_CASE
+            iActiveCmd := iCmdLatch;
+            iCmdLatch := 0;
+        END_IF
+    ELSE
+        IF fbStacker.fbStackerStatus = enPalletStackerStatus.Idle THEN
+            iActiveCmd := 0;
+        END_IF
+    END_IF
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

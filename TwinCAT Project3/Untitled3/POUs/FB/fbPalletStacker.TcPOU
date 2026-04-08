@@ -1,0 +1,518 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="fbPalletStacker" Id="{f45694bc-ba92-48cf-a251-5a58335c5f47}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK fbPalletStacker IMPLEMENTS ITFGesimuleerdAO, ITFPalletStacker
+VAR_INPUT
+bDeurDicht           : BOOL;  // Safety door switch (TRUE = closed/safe)
+bNoodstopOk    : BOOL;
+bVeiligheidHold : BOOL;
+END_VAR
+VAR_OUTPUT
+	bPalletError :bool := 0;
+END_VAR
+
+VAR CONSTANT
+	iMaxPallet : UINT := 5;
+	ipallethoogte : UINT := 20;
+	iplatformhoogte : UINT := 0;
+	iMaxPalletSensor : UINT:= (iMaxPallet * ipallethoogte + iplatformhoogte);
+END_VAR
+
+VAR	
+	bRunPermit  : BOOL; 
+	EStatusVoorError : enPalletStackerStatus;
+	bLegenDone        : BOOL;
+	bDeurMagOpen      : BOOL;  // HMI indicator
+	bLegenConfirmed       : BOOL;  // HMI confirmation after emptying
+	
+	StartCmd             : BOOL;  // HMI start cycle
+	StopCmd              : BOOL;  // HMI stop cycle
+	CycleActive          : BOOL;  // internal running flag
+	
+	ClearForLoad         : BOOL;  // internal gating
+	liftTol              : REAL;  // position tolerance
+
+	fbLoopband : fbTemploopband;
+    fbPins     : fbTemppalletpins;
+    fbLift     : fbStackerServo;
+    fbAfstandSensor  : fbAfstandSensor;
+	fbPalletBufferSensor : fbLichtSensor;
+	fbPalletInLiftSensor : fbLichtSensor;
+
+    fbStackerStatus    : enPalletStackerStatus := enPalletStackerStatus.Idle;
+	fbStatusString : string;
+
+	ePalletBufferStatus : enBufferStatus := 0;
+	
+	sVolgendeStap :STRING;
+	bError: BOOL;
+	bKlaarVoorVolgende: BOOL := 1;
+	
+	tonErrorTimer: TON;
+	
+	tiHmiTimer: TIME;
+	bAlarmAck: BOOL;
+	bAlarmTrig: BOOL;
+	bPalletVoorLiftSensor: BOOL;
+	sbuffervol: STRING;
+	bStatusVeranderd: BOOL;
+	eVorigeStatus: enPalletStackerStatus;
+	
+	fblogger : FB_TcEventLogger;
+	fbalarm : FB_tcalarm;
+	fbsource: FB_tcsourceinfo;
+	fbargument: fb_tcarguments;
+
+	bDeurSlot: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Update bufferstatus
+fbStatusString := TO_STRING(fbStackerStatus);
+sbuffervol := TO_STRING(ePalletBufferStatus);
+tiHmiTimer := tonErrorTimer.ET;
+
+// Run permit from controller safety
+bRunPermit := bNoodstopOk AND (NOT bVeiligheidHold);
+
+// Detect state change for timer reset
+bStatusVeranderd := (fbStackerStatus <> eVorigeStatus);
+IF bStatusVeranderd THEN
+    eVorigeStatus := fbStackerStatus;
+    bAlarmTrig := FALSE;
+END_IF
+
+// Safety interlock (EStop or SafetyHold)
+IF NOT bRunPermit THEN
+    fbLoopband.Stop();
+    fbLift.Enable := 0;
+    bAlarmTrig := FALSE;
+	
+	fbsource.Clear();
+	fbsource.sName := 'Noodstop';
+	fbalarm.CreateEx(tc_events.StackerEvents.Noodstop, TRUE, fbsource);
+	fbalarm.Raise(0);
+ELSE
+    fbLift.Enable := 1;
+END_IF
+
+// ErrorTimer handling (reset on state change or safety)
+IF bStatusVeranderd OR NOT bAlarmTrig OR NOT bRunPermit OR NOT bDeurDicht THEN
+    tonErrorTimer(IN := FALSE, PT := T#60S);
+ELSE
+    tonErrorTimer(IN := TRUE, PT := T#60S);
+END_IF
+
+IF tonErrorTimer.Q AND fbStackerStatus <> enPalletStackerStatus.Error THEN
+    EStatusVoorError := fbStackerStatus;
+    fbStackerStatus := enPalletStackerStatus.Error;
+    bAlarmTrig := FALSE;
+	
+	fbsource.Clear();
+	fbsource.sName := 'error timer';
+	fbalarm.CreateEx(tc_events.StackerEvents.Vastgelopen, TRUE, fbsource);
+	// hoe kijk je als dit gebeurt
+	fbalarm.Raise(0);
+	
+END_IF
+
+// Bufferstatus bepalen
+IF fbAfstandSensor.SensorWaarde >= iMaxPalletSensor THEN
+    ePalletBufferStatus := enBufferStatus.vol;
+ELSIF fbAfstandSensor.SensorWaarde = iMaxPalletSensor - 2 * ipallethoogte
+      AND iMaxPalletSensor > 2 * ipallethoogte + iplatformhoogte THEN
+    ePalletBufferStatus := enBufferStatus.BijnaVol;
+ELSIF fbAfstandSensor.SensorWaarde >= iplatformhoogte + ipallethoogte THEN
+    ePalletBufferStatus := enBufferStatus.DeelsGevuld;
+ELSE
+    ePalletBufferStatus := enBufferStatus.Leeg;
+END_IF
+
+// Clear to load condition: no pins out, lift at load height, not mid-cycle
+ClearForLoad :=
+    (NOT fbPins.PinsUit)
+    AND (ABS(fbLift.positie - (iplatformhoogte + ipallethoogte)) <= liftTol)
+    AND (NOT bPalletVoorLiftSensor);
+
+// Door lock logic
+IF NOT bRunPermit THEN
+    bDeurSlot := FALSE;
+ELSIF fbStackerStatus = enPalletStackerStatus.Legen THEN
+    IF bLegenDone THEN
+        bDeurSlot := FALSE;
+    ELSE
+        bDeurSlot := TRUE;
+    END_IF
+ELSIF CycleActive THEN
+    bDeurSlot := TRUE;
+ELSE
+    bDeurSlot := FALSE;
+END_IF
+
+bDeurMagOpen := NOT bDeurSlot;
+
+// Start/Stop behavior
+IF StopCmd THEN
+    CycleActive := FALSE;
+END_IF
+
+//IF StartCmd AND bDeurDicht AND bRunPermit THEN
+   // CycleActive := TRUE;
+//END_IF
+
+CASE fbStackerStatus OF
+//==================== Idle ====================
+enPalletStackerStatus.Idle:
+    sVolgendeStap := 'Idle: wacht op start/legen';
+    bKlaarVoorVolgende := FALSE;
+    bPalletVoorLiftSensor := 0;
+    bAlarmTrig := FALSE;
+    bLegenDone := FALSE;
+
+    //IF CycleActive THEN
+      //  State := E_PalletStackerStatus.Collecting;
+    //END_IF
+
+//==================== Collecting ====================
+enPalletStackerStatus.Collecting:
+    sVolgendeStap := 'Collecting: pallet naar buffer';
+
+    IF NOT bRunPermit THEN
+        sVolgendeStap := 'Collecting: veiligheidsstop, pauze';
+        fbLoopband.Stop();
+        bAlarmTrig := FALSE;
+
+    ELSIF NOT bDeurDicht THEN
+        sVolgendeStap := 'Collecting: deur open, pauze';
+        fbLoopband.Stop();
+        bAlarmTrig := FALSE;
+		
+		fbsource.Clear();
+		fbsource.sName := 'deur open';
+		fbalarm.CreateEx(tc_events.StackerEvents.Door1Open, TRUE, fbsource);
+	    fbalarm.Raise(0);
+		
+    // 1) Breng pallet naar voor de lift
+    ELSIF (ePalletBufferStatus = enBufferStatus.Leeg OR ePalletBufferStatus = enBufferStatus.DeelsGevuld)
+          AND NOT bPalletVoorLiftSensor THEN
+
+        fbLoopband.Beweeg();
+        sVolgendeStap := 'Collecting: wacht op PalletBeforeLiftSensor';
+
+        IF fbPalletBufferSensor.SensorWaarde1 THEN
+            fbLoopband.Stop();
+            bPalletVoorLiftSensor := 1;
+            bAlarmTrig := FALSE;
+        ELSE
+            bAlarmTrig := TRUE;
+        END_IF
+		
+
+
+    // 2) Zorg dat lift klaar is (geen pins uit, juiste hoogte)
+    ELSIF bPalletVoorLiftSensor AND NOT bKlaarVoorVolgende THEN
+        IF NOT fbPins.pinsin THEN
+            fbPins.ErinBewegen();
+            sVolgendeStap := 'Collecting: pins in voor laden';
+            bAlarmTrig := TRUE;
+        ELSE
+            fbLift.DoelPositie := iplatformhoogte + ipallethoogte;
+            fbLift.BeweegNaarDoel();
+            sVolgendeStap := 'Collecting: lift naar laadhoogte';
+
+            IF ABS(fbLift.positie - (iplatformhoogte + ipallethoogte)) <= liftTol THEN
+                bKlaarVoorVolgende := TRUE;
+                bAlarmTrig := FALSE;
+            ELSE
+                bAlarmTrig := TRUE;
+            END_IF
+        END_IF
+
+    // 3) Pallet in lift laden
+    ELSIF bKlaarVoorVolgende AND bPalletVoorLiftSensor THEN
+        fbLoopband.Beweeg();
+        sVolgendeStap := 'Collecting: wacht op PalletInLiftSensor';
+
+        IF fbPalletInLiftSensor.SensorWaarde1 THEN
+            bKlaarVoorVolgende := FALSE;
+            bPalletVoorLiftSensor := 0;
+            fbLoopband.Stop();
+            fbStackerStatus := enPalletStackerStatus.PinsUitBewegen;
+            bAlarmTrig := FALSE;
+        ELSE
+            bAlarmTrig := TRUE;
+        END_IF
+		
+
+	
+	ELSIF ePalletBufferStatus = enBufferStatus.vol OR ePalletBufferStatus = enBufferStatus.BijnaVol THEN
+    fbLoopband.Stop();
+    sVolgendeStap := 'Collecting: buffer vol, cyclus stopt';
+    bAlarmTrig := FALSE;
+    CycleActive := FALSE;
+    fbStackerStatus := enPalletStackerStatus.Idle;
+    END_IF
+
+//==================== Pins Uit Bewegen ====================
+enPalletStackerStatus.PinsUitBewegen:
+    sVolgendeStap := 'PinsUit: pallet neerzetten op pins';
+
+    IF NOT bRunPermit THEN
+        sVolgendeStap := 'PinsUit: veiligheidsstop, pauze';
+        bAlarmTrig := FALSE;
+    ELSIF NOT bDeurDicht THEN
+        sVolgendeStap := 'PinsUit: deur open, pauze';
+        bAlarmTrig := FALSE;
+    ELSIF fbPins.PinsUit THEN
+        fbStackerStatus := enPalletStackerStatus.LiftBewegen;
+        bAlarmTrig := FALSE;
+    ELSE
+        fbPins.EruitBewegen();
+        bAlarmTrig := TRUE;
+    END_IF
+
+//==================== Lift Bewegen ====================
+enPalletStackerStatus.LiftBewegen:
+    sVolgendeStap := 'LiftBewegen: lift omlaag';
+
+    IF NOT bRunPermit THEN
+        sVolgendeStap := 'LiftBewegen: veiligheidsstop, pauze';
+        bAlarmTrig := FALSE;
+    ELSIF NOT bDeurDicht THEN
+        sVolgendeStap := 'LiftBewegen: deur open, pauze';
+        bAlarmTrig := FALSE;
+    ELSIF fbPins.pinsuit THEN
+        fbLift.DoelPositie := iplatformhoogte;
+        fbLift.BeweegNaarDoel();
+
+        IF ABS(fbLift.positie - iplatformhoogte) <= liftTol THEN
+            fbStackerStatus := enPalletStackerStatus.PinsInBewegen;
+            bAlarmTrig := FALSE;
+        ELSE
+            bAlarmTrig := TRUE;
+        END_IF
+    ELSE
+        bAlarmTrig := TRUE;
+    END_IF
+
+//==================== Pins In Bewegen ====================
+enPalletStackerStatus.PinsInBewegen:
+    sVolgendeStap := 'PinsIn: pallet vrijgeven';
+
+    IF NOT bRunPermit THEN
+        sVolgendeStap := 'PinsIn: veiligheidsstop, pauze';
+        bAlarmTrig := FALSE;
+    ELSIF NOT bDeurDicht THEN
+        sVolgendeStap := 'PinsIn: deur open, pauze';
+        bAlarmTrig := FALSE;
+    ELSIF fbPins.pinsin THEN
+        fbStackerStatus := enPalletStackerStatus.PalletLaden;
+        bAlarmTrig := FALSE;
+    ELSE
+        fbPins.ErinBewegen();
+        bAlarmTrig := TRUE;
+    END_IF
+
+//==================== Pallet Laden ====================
+enPalletStackerStatus.PalletLaden:
+    sVolgendeStap := 'PalletLaden: lift omhoog klaar voor next';
+
+    IF NOT bRunPermit THEN
+        sVolgendeStap := 'PalletLaden: veiligheidsstop, pauze';
+        bAlarmTrig := FALSE;
+    ELSIF NOT bDeurDicht THEN
+        sVolgendeStap := 'PalletLaden: deur open, pauze';
+        bAlarmTrig := FALSE;
+    ELSE
+        fbLift.DoelPositie := iplatformhoogte + ipallethoogte;
+        fbLift.BeweegNaarDoel();
+
+        IF ABS(fbLift.positie - (iplatformhoogte + ipallethoogte)) <= liftTol THEN
+            bKlaarVoorVolgende := TRUE;
+            CycleActive := FALSE;
+            fbStackerStatus := enPalletStackerStatus.Idle;
+            fbAfstandSensor.SensorWaarde := fbAfstandSensor.SensorWaarde + ipallethoogte;
+            bAlarmTrig := FALSE;
+        ELSE
+            bAlarmTrig := TRUE;
+        END_IF
+    END_IF
+
+//==================== Legen ====================
+enPalletStackerStatus.Legen:
+    sVolgendeStap := 'Legen: pallets naar bodem';
+
+    IF NOT bRunPermit THEN
+        sVolgendeStap := 'Legen: veiligheidsstop, pauze';
+        fbLoopband.Stop();
+        bAlarmTrig := FALSE;
+
+    ELSIF (NOT bDeurDicht) AND (NOT bLegenDone) THEN
+        sVolgendeStap := 'Legen: deur open, pauze beweging';
+        fbLoopband.Stop();
+        bAlarmTrig := FALSE;
+    ELSE
+        IF NOT bLegenDone THEN
+            fbLift.DoelPositie := 0;
+            fbLift.BeweegNaarDoel();
+            sVolgendeStap := 'Legen: lift naar bodem, pins uit';
+
+            IF ABS(fbLift.positie - 0) <= liftTol THEN
+                fbPins.EruitBewegen();
+                IF fbPins.PinsUit THEN
+                    bLegenDone := TRUE;
+                    bAlarmTrig := FALSE;
+                ELSE
+                    bAlarmTrig := TRUE;
+                END_IF
+            ELSE
+                bAlarmTrig := TRUE;
+            END_IF
+        ELSE
+            sVolgendeStap := 'Legen: leeg, wacht confirm (deur mag open)';
+            bAlarmTrig := FALSE;
+
+            // Pas leeg teller na confirm en alleen als deur dicht
+            IF bLegenConfirmed AND bDeurDicht THEN
+                fbAfstandSensor.SensorWaarde := 0;
+                bLegenDone := FALSE;
+                fbStackerStatus := enPalletStackerStatus.Idle;
+            END_IF
+        END_IF
+    END_IF
+
+//==================== Error ====================
+enPalletStackerStatus.Error:
+    sVolgendeStap := 'ERROR: stop alles, wacht reset';
+    bError := 1;
+	
+
+    fbLoopband.Stop();
+    fbLift.Enable := 0;
+    fbLift.DoelPositie := fbLift.positie;
+
+    bKlaarVoorVolgende := FALSE;
+    bPalletVoorLiftSensor := 0;
+    bAlarmTrig := FALSE;
+    CycleActive := FALSE;
+
+    IF bAlarmAck = 1 THEN
+        bError := 0;
+        bAlarmTrig := FALSE;
+        IF bDeurDicht THEN
+            fbStackerStatus := EStatusVoorError;
+        ELSE
+            fbStackerStatus := enPalletStackerStatus.Idle;
+        END_IF
+    END_IF
+END_CASE
+
+
+IF (fbStackerStatus <> enPalletStackerStatus.Error) AND bDeurDicht AND bNoodstopOk AND NOT bVeiligheidHold THEN
+    fbsource.Clear();
+    fblogger.ClearAllAlarms();
+END_IF
+
+
+
+]]></ST>
+    </Implementation>
+    <Method Name="CollectPallet" Id="{2e0f8c98-5db4-438b-8f55-10439f8e8dd0}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD CollectPallet : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[    IF fbStackerStatus = enPalletStackerStatus.idle AND NOT fbAfstandSensor.SensorWaarde >= iMaxPalletSensor THEN
+        fbStackerStatus := enPalletStackerStatus.Collecting;
+        CollectPallet := TRUE;
+    ELSE
+        CollectPallet := FALSE;
+    END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="EmptyStack" Id="{4fd40552-96ad-46df-a199-16395d9dac33}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD EmptyStack : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[    IF fbStackerStatus = enPalletStackerStatus.Idle AND NOT fbAfstandSensor.SensorWaarde >= iMaxPallet THEN
+        fbStackerStatus := enPalletStackerStatus.Legen;
+        EmptyStack := TRUE;
+    ELSE
+        EmptyStack := FALSE;
+    END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{c36c0b0e-cd8a-477d-a08b-6448acad0b78}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD Reset
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="SensorWaarde" Id="{52c28f07-420d-49f0-af6f-501886b94371}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY SensorWaarde : INT
+]]></Declaration>
+      <Get Name="Get" Id="{fcf33d1b-5a0c-4f37-b627-498eaa464cce}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{23c68930-cb6e-4440-8a8f-ba7d9ea75f2a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="StackPallet" Id="{fa70ac83-9774-46ac-9ac1-602eca07dc85}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD StackPallet : bool
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[    IF fbStackerStatus = enPalletStackerStatus.Idle AND NOT fbAfstandSensor.SensorWaarde >= iMaxPallet THEN
+       // State := E_PalletStackerStatus.PinsBewegen;
+        StackPallet := TRUE;
+    ELSE
+        StackPallet := FALSE;
+    END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Status" Id="{e14859b8-bdcb-46ee-90ab-2c453bb336ae}">
+      <Declaration><![CDATA[{warning 'Add property implementation'}
+PROPERTY Status : E_DeviceStatus
+]]></Declaration>
+      <Get Name="Get" Id="{1b639bff-9b85-44a6-b411-2b7bb4d069d0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{932d5590-c731-4ca1-9761-4e19a511890d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Stop" Id="{7822a5a2-83d8-4fec-8a0c-4a242b9868c0}">
+      <Declaration><![CDATA[{warning 'Add method implementation '}
+METHOD Stop
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

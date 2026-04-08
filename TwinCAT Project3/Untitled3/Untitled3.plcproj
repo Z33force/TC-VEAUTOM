@@ -18,7 +18,7 @@
     <LibraryReferences>{15624de6-a98d-4212-abae-3c1753f86e6c}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\E_BufferStatus.TcDUT">
+    <Compile Include="DUTs\enBufferStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\E_DeviceStatus.TcDUT">
@@ -27,10 +27,7 @@
     <Compile Include="DUTs\E_MotorStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\E_PalletStackerStatus.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\ST_Point.TcDUT">
+    <Compile Include="DUTs\enPalletStackerStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Interfaces\ITFGesimuleerdDI.TcIO">
@@ -60,25 +57,25 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB\FB_AfstandSensor.TcPOU">
+    <Compile Include="POUs\FB\fbAfstandSensor.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB\FB_ControllerPalletStacker.TcPOU">
+    <Compile Include="POUs\FB\fbControllerPalletStacker.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB\FB_LichtSensor.TcPOU">
+    <Compile Include="POUs\FB\fbLichtSensor.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB\FB_PalletStacker.TcPOU">
+    <Compile Include="POUs\FB\fbPalletStacker.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB\FB_ServoMotor.TcPOU">
+    <Compile Include="POUs\FB\fbStackerServo.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB\FB_temploopband.TcPOU">
+    <Compile Include="POUs\FB\fbTemploopband.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB\FB_temppalletpins.TcPOU">
+    <Compile Include="POUs\FB\fbTemppalletpins.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -122,8 +119,8 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-        <Data>
-          <o xml:space="preserve" t="OptionKey">
+  <Data>
+    <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
@@ -193,14 +190,14 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-        </Data>
-        <TypeList>
-          <Type n="Boolean">System.Boolean</Type>
-          <Type n="Hashtable">System.Collections.Hashtable</Type>
-          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-          <Type n="String">System.String</Type>
-        </TypeList>
-      </XmlArchive>
+  </Data>
+  <TypeList>
+    <Type n="Boolean">System.Boolean</Type>
+    <Type n="Hashtable">System.Collections.Hashtable</Type>
+    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+    <Type n="String">System.String</Type>
+  </TypeList>
+</XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>
