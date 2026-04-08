@@ -1905,6 +1905,74 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.MAIN.PalletStacker.fbLift.BInternEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbLift::BInternEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 6
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.fbLift.IDoelPositie": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbLift::IDoelPositie",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.fbLift.IPositie": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbLift::IPositie",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.fbLoopband.LoopbandActief": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbLoopband::LoopbandActief",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.MAIN.PalletStacker.fbPalletBufferSensor.sensorwaarde1": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5785,6 +5853,10 @@
                 "ADS.PLC1.MAIN.PalletStacker.bLegenConfirmed": 3,
                 "ADS.PLC1.MAIN.PalletStacker.buffervolstring": 3,
                 "ADS.PLC1.MAIN.PalletStacker.fbAfstandSensor.IHmiStackerAfstandSensorSim": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbLift.BInternEnable": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbLift.IDoelPositie": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbLift.IPositie": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbLoopband.LoopbandActief": 3,
                 "ADS.PLC1.MAIN.PalletStacker.fbPalletBufferSensor.sensorwaarde1": 3,
                 "ADS.PLC1.MAIN.PalletStacker.fbPalletInLiftSensor.sensorwaarde1": 3,
                 "ADS.PLC1.MAIN.PalletStacker.fbPalletVoorLiftSensor.sensorwaarde1": 3,

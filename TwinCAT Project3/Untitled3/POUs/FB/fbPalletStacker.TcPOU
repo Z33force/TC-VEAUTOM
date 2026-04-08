@@ -38,7 +38,8 @@ VAR
     fbAfstandSensor  : fbAfstandSensor;
 	fbPalletVoorLiftSensor : fbLichtSensor;
 	fbPalletInLiftSensor : fbLichtSensor;
-
+    bRunPermitPrev : BOOL := TRUE;
+    bNoodstopEdge  : BOOL;
     fbStackerStatus    : enPalletStackerStatus := enPalletStackerStatus.Idle;
 	fbStatusString : string;
 
@@ -82,16 +83,12 @@ IF bStatusVeranderd THEN
     bAlarmTrig := FALSE;
 END_IF
 
-// Safety interlock (EStop or SafetyHold)
+
 IF NOT bRunPermit THEN
     fbLoopband.Stop();
     fbLift.Enable := 0;
     bAlarmTrig := FALSE;
-	
-	fbsource.Clear();
-	fbsource.sName := 'Noodstop';
-	fbalarm.CreateEx(tc_events.StackerEvents.Noodstop, TRUE, fbsource);
-	fbalarm.Raise(0);
+
 ELSE
     fbLift.Enable := 1;
 END_IF
@@ -127,13 +124,12 @@ ELSE
     ePalletBufferStatus := enBufferStatus.Leeg;
 END_IF
 
-// Clear to load condition: no pins out, lift at load height, not mid-cycle
 ClearForLoad :=
     (NOT fbPins.PinsUit)
     AND (ABS(fbLift.positie - (iplatformhoogte + ipallethoogte)) <= liftTol)
     AND (NOT bPalletVoorLiftSensor);
 
-// Door lock logic
+
 IF NOT bRunPermit THEN
     bDeurSlot := FALSE;
 ELSIF fbStackerStatus = enPalletStackerStatus.Legen THEN
@@ -150,14 +146,12 @@ END_IF
 
 bDeurMagOpen := NOT bDeurSlot;
 
-// Start/Stop behavior
+
 IF StopCmd THEN
     CycleActive := FALSE;
 END_IF
 
-//IF StartCmd AND bDeurDicht AND bRunPermit THEN
-   // CycleActive := TRUE;
-//END_IF
+
 
 CASE fbStackerStatus OF
 //==================== Idle ====================
@@ -167,10 +161,6 @@ enPalletStackerStatus.Idle:
     bPalletVoorLiftSensor := 0;
     bAlarmTrig := FALSE;
     bLegenDone := FALSE;
-
-    //IF CycleActive THEN
-      //  State := E_PalletStackerStatus.Collecting;
-    //END_IF
 
 //==================== Collecting ====================
 enPalletStackerStatus.Collecting:
@@ -186,13 +176,10 @@ enPalletStackerStatus.Collecting:
         fbLoopband.Stop();
         bAlarmTrig := FALSE;
 		
-		fbsource.Clear();
-		fbsource.sName := 'deur open';
-		fbalarm.CreateEx(tc_events.StackerEvents.Door1Open, TRUE, fbsource);
-	    fbalarm.Raise(0);
+
 		
     // 1) Breng pallet naar voor de lift
-    ELSIF (ePalletBufferStatus = enBufferStatus.Leeg OR ePalletBufferStatus = enBufferStatus.DeelsGevuld)
+    ELSIF (ePalletBufferStatus = enBufferStatus.Leeg OR ePalletBufferStatus = enBufferStatus.DeelsGevuld OR ePalletBufferStatus =enBufferStatus.BijnaVol)
           AND NOT bPalletVoorLiftSensor THEN
 
         fbLoopband.Beweeg();
@@ -368,7 +355,7 @@ enPalletStackerStatus.Legen:
                 bAlarmTrig := TRUE;
             END_IF
         ELSE
-            sVolgendeStap := 'Legen: leeg, wacht confirm (deur mag open)';
+            sVolgendeStap := 'Legen: leeg, wacht confirm';
             bAlarmTrig := FALSE;
 
             // Pas leeg teller na confirm en alleen als deur dicht
@@ -407,10 +394,11 @@ enPalletStackerStatus.Error:
 END_CASE
 
 
-IF (fbStackerStatus <> enPalletStackerStatus.Error) AND bDeurDicht AND bNoodstopOk AND NOT bVeiligheidHold THEN
+IF bAlarmAck THEN
     fbsource.Clear();
     fblogger.ClearAllAlarms();
 END_IF
+
 
 
 

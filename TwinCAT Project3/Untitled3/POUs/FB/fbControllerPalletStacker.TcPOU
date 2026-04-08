@@ -30,11 +30,37 @@ END_VAR
     rLegen   : R_TRIG;
     iCmdLatch : INT;
 
+	fblogger : FB_TcEventLogger;
+	fbalarm : FB_tcalarm;
+	fbsource: FB_tcsourceinfo;
+	fbargument: fb_tcarguments;
+	bDoorOpenPrev  : BOOL := FALSE;
+    bEStopPrev     : BOOL := FALSE;
+    bDoorOpenEdge  : BOOL;
+    bEStopEdge     : BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// Safety
 bAlleDeurenDicht := bDeur1Dicht AND bDeur2Dicht;
 bVeiligheidTrip := (NOT bAlleDeurenDicht) OR (bNoodstop);
+
+bDoorOpenEdge := (bDoorOpenPrev = FALSE) AND (bAlleDeurenDicht = FALSE);
+bDoorOpenPrev := (bAlleDeurenDicht = FALSE);
+bEStopEdge := (bEStopPrev = FALSE) AND (bNoodstop = TRUE);
+bEStopPrev := bNoodstop;
+IF bDoorOpenEdge THEN
+    fbsource.Clear();
+    fbsource.sName := 'deur open';
+    fbalarm.CreateEx(tc_events.StackerEvents.Door1Open, TRUE, fbsource);
+    fbalarm.Raise(0);
+END_IF
+
+IF bEStopEdge THEN
+    fbsource.Clear();
+    fbsource.sName := 'Noodstop';
+    fbalarm.CreateEx(tc_events.StackerEvents.Noodstop, TRUE, fbsource);
+    fbalarm.Raise(0);
+END_IF
 
 IF bVeiligheidTrip THEN
     bVeiligheidsLatch := TRUE;
@@ -65,14 +91,11 @@ rLegen(CLK := bCmdLegen);
 
 IF rCollect.Q THEN iCmdLatch := 1; END_IF
 IF rLegen.Q THEN
-    //Stacker.EmptyStack();
-    //ActiveCmd := 2;
     iCmdLatch := 0;
 END_IF
 
-// Execute commands
+
 IF NOT bVeiligheidsPauze THEN
-    // Empty has priority and can interrupt Collect
     IF rLegen.Q THEN
         fbStacker.EmptyStack();
         iActiveCmd := 2;

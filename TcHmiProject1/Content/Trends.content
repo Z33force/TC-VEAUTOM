@@ -28,6 +28,7 @@
   {
     "id": 1,
     "position": "Left",
+    "mainTickMaxValue": 10.0,
     "axisName": "Pallets",
     "labelFontColor": "%tr%Control::TcHmi.Controls.Beckhoff.TcHmiTrendLineChart::YAxisLabelFontColor%/tr%",
     "axisColor": "%tr%Control::TcHmi.Controls.Beckhoff.TcHmiTrendLineChart::YAxisAxisColor%/tr%",
@@ -60,7 +61,7 @@
   {
     "id": 1,
     "position": "Left",
-    "mainTickMaxValue": 6.0,
+    "mainTickMaxValue": 8.0,
     "axisName": "State",
     "labelFontColor": "%tr%Control::TcHmi.Controls.Beckhoff.TcHmiTrendLineChart::YAxisLabelFontColor%/tr%",
     "axisColor": "%tr%Control::TcHmi.Controls.Beckhoff.TcHmiTrendLineChart::YAxisAxisColor%/tr%",
