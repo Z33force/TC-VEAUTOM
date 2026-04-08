@@ -16,16 +16,8 @@
     "name": "Meldingen"
   },
   {
-    "content": "Content/Settings.content",
-    "name": "Settings"
-  },
-  {
     "content": "Content/Content1.content",
     "name": "Palletizer"
-  },
-  {
-    "content": "Content/Simu1.content",
-    "name": "Simulation"
   }
 ]
 </script>

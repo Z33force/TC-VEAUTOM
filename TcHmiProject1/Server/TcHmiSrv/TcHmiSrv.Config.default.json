@@ -237,6 +237,64 @@
                     "y"
                 ],
                 "type": "object"
+            },
+            "ADS-PLC1.enPalletStackerStatus": {
+                "attributes": {
+                    "generate_implicit_init_function": "",
+                    "qualified_only": "",
+                    "strict": "",
+                    "to_string": ""
+                },
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8
+                ],
+                "options": [
+                    {
+                        "label": "Idle",
+                        "value": 0
+                    },
+                    {
+                        "label": "Collecting",
+                        "value": 1
+                    },
+                    {
+                        "label": "PinsUitBewegen",
+                        "value": 2
+                    },
+                    {
+                        "label": "LiftBewegen",
+                        "value": 3
+                    },
+                    {
+                        "label": "Omwisselen",
+                        "value": 4
+                    },
+                    {
+                        "label": "Legen",
+                        "value": 5
+                    },
+                    {
+                        "label": "Error",
+                        "value": 6
+                    },
+                    {
+                        "label": "PalletLaden",
+                        "value": 7
+                    },
+                    {
+                        "label": "PinsInBewegen",
+                        "value": 8
+                    }
+                ],
+                "type": "integer"
             }
         }
     },
@@ -1129,6 +1187,24 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.MAIN.Ctrl.BVeiligheidAck": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::Ctrl::BVeiligheidAck",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "HMI button",
+                        "propertyOrder": 12
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.MAIN.Ctrl.Door2Closed": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -1176,6 +1252,57 @@
                     },
                     {
                         "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.Ctrl.bVeiligheidsPauze": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::Ctrl::bVeiligheidsPauze",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 7
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.Ctrl.fbStacker.fbStatusString": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::Ctrl::fbStacker::fbStatusString",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                    },
+                    {
+                        "propertyOrder": 26
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.Ctrl.iActiveCmd": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::Ctrl::iActiveCmd",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    },
+                    {
+                        "propertyOrder": 8
                     }
                 ]
             },
@@ -1692,6 +1819,58 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.MAIN.PalletStacker.bAlarmAck": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::bAlarmAck",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 33
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.bError": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::bError",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 29
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.bLegenConfirmed": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::bLegenConfirmed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "HMI confirmation after emptying",
+                        "propertyOrder": 13
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.MAIN.PalletStacker.buffervolstring": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -1704,6 +1883,125 @@
                     },
                     {
                         "propertyOrder": 39
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.fbAfstandSensor.IHmiStackerAfstandSensorSim": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbAfstandSensor::IHmiStackerAfstandSensorSim",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.fbPalletBufferSensor.sensorwaarde1": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbPalletBufferSensor::sensorwaarde1",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.fbPalletInLiftSensor.sensorwaarde1": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbPalletInLiftSensor::sensorwaarde1",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.fbPalletVoorLiftSensor.sensorwaarde1": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbPalletVoorLiftSensor::sensorwaarde1",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.fbPins.PinsIn": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbPins::PinsIn",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.fbPins.PinsUit": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbPins::PinsUit",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.fbStackerStatus": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::fbStackerStatus",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.enPalletStackerStatus"
+                    },
+                    {
+                        "propertyOrder": 25
                     }
                 ]
             },
@@ -1723,6 +2021,216 @@
                         "propertyOrder": 6
                     }
                 ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.sVolgendeStap": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::sVolgendeStap",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                    },
+                    {
+                        "propertyOrder": 28
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.sbuffervol": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::sbuffervol",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                    },
+                    {
+                        "propertyOrder": 36
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.PalletStacker.tiHmiTimer": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::PalletStacker::tiHmiTimer",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 32
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.bDeur1Dicht": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::bDeur1Dicht",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.bDeur2Dicht": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::bDeur2Dicht",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.bNoodstop": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::bNoodstop",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.fbAfstandSensor.IHmiStackerAfstandSensorSim": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::fbAfstandSensor::IHmiStackerAfstandSensorSim",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.fbLift.BInternEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::fbLift::BInternEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 6
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.fbLift.IDoelPositie": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::fbLift::IDoelPositie",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.fbLift.IPositie": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::fbLift::IPositie",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.fbLift.MotorStatusString": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::fbLift::MotorStatusString",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                    },
+                    {
+                        "propertyOrder": 7
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.fbLoopband.LoopbandActief": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::fbLoopband::LoopbandActief",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.fbPalletBufferSensor.BHmiPalletSensorSim": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::fbPalletBufferSensor::BHmiPalletSensorSim",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.MAIN.iStackerOperatie": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::iStackerOperatie",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/INT"
             },
             "USEMAPPING": true
         },
@@ -5233,9 +5741,13 @@
                 "ADS.PLC1.MAIN.Ctrl.AutoDelayPinsIn": 3,
                 "ADS.PLC1.MAIN.Ctrl.AutoDelayPinsOut": 3,
                 "ADS.PLC1.MAIN.Ctrl.AutoRunning": 3,
+                "ADS.PLC1.MAIN.Ctrl.BVeiligheidAck": 3,
                 "ADS.PLC1.MAIN.Ctrl.Door2Closed": 3,
                 "ADS.PLC1.MAIN.Ctrl.SafetyAck": 3,
                 "ADS.PLC1.MAIN.Ctrl.SafetyPaused": 3,
+                "ADS.PLC1.MAIN.Ctrl.bVeiligheidsPauze": 3,
+                "ADS.PLC1.MAIN.Ctrl.fbStacker.fbStatusString": 3,
+                "ADS.PLC1.MAIN.Ctrl.iActiveCmd": 3,
                 "ADS.PLC1.MAIN.Door2Closed": 3,
                 "ADS.PLC1.MAIN.DoorClosed": 3,
                 "ADS.PLC1.MAIN.EStop": 3,
@@ -5268,8 +5780,32 @@
                 "ADS.PLC1.MAIN.PalletStacker.State": 3,
                 "ADS.PLC1.MAIN.PalletStacker.StateString": 3,
                 "ADS.PLC1.MAIN.PalletStacker.TrendData": 3,
+                "ADS.PLC1.MAIN.PalletStacker.bAlarmAck": 3,
+                "ADS.PLC1.MAIN.PalletStacker.bError": 3,
+                "ADS.PLC1.MAIN.PalletStacker.bLegenConfirmed": 3,
                 "ADS.PLC1.MAIN.PalletStacker.buffervolstring": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbAfstandSensor.IHmiStackerAfstandSensorSim": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbPalletBufferSensor.sensorwaarde1": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbPalletInLiftSensor.sensorwaarde1": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbPalletVoorLiftSensor.sensorwaarde1": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbPins.PinsIn": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbPins.PinsUit": 3,
+                "ADS.PLC1.MAIN.PalletStacker.fbStackerStatus": 3,
                 "ADS.PLC1.MAIN.PalletStacker.pallethoogte": 3,
+                "ADS.PLC1.MAIN.PalletStacker.sVolgendeStap": 3,
+                "ADS.PLC1.MAIN.PalletStacker.sbuffervol": 3,
+                "ADS.PLC1.MAIN.PalletStacker.tiHmiTimer": 3,
+                "ADS.PLC1.MAIN.bDeur1Dicht": 3,
+                "ADS.PLC1.MAIN.bDeur2Dicht": 3,
+                "ADS.PLC1.MAIN.bNoodstop": 3,
+                "ADS.PLC1.MAIN.fbAfstandSensor.IHmiStackerAfstandSensorSim": 3,
+                "ADS.PLC1.MAIN.fbLift.BInternEnable": 3,
+                "ADS.PLC1.MAIN.fbLift.IDoelPositie": 3,
+                "ADS.PLC1.MAIN.fbLift.IPositie": 3,
+                "ADS.PLC1.MAIN.fbLift.MotorStatusString": 3,
+                "ADS.PLC1.MAIN.fbLoopband.LoopbandActief": 3,
+                "ADS.PLC1.MAIN.fbPalletBufferSensor.BHmiPalletSensorSim": 3,
+                "ADS.PLC1.MAIN.iStackerOperatie": 3,
                 "ADS.PLC1.MAIN.tester": 3,
                 "ChangeUserSettings": 3,
                 "ConfirmAlarm": 3,

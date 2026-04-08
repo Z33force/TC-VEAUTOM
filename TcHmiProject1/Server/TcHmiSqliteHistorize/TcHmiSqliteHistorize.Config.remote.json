@@ -1,19 +1,13 @@
 {
     "enableBackup": false,
     "historizedSymbolList": {
-        "ADS.PLC1.MAIN.PalletStacker.PalletBufferSensor": {
+        "ADS.PLC1.MAIN.PalletStacker.fbAfstandSensor.IHmiStackerAfstandSensorSim": {
             "interval": "PT1S",
-            "maxEntries": 100,
+            "maxEntries": 10000,
             "recordingEnabled": true,
             "rowLimit": 100000
         },
-        "ADS.PLC1.MAIN.PalletStacker.State": {
-            "interval": "PT0.1S",
-            "maxEntries": 100,
-            "recordingEnabled": true,
-            "rowLimit": 100000
-        },
-        "ADS.PLC1.MAIN.PalletStacker.pallethoogte": {
+        "ADS.PLC1.MAIN.PalletStacker.fbStackerStatus": {
             "interval": "PT1S",
             "maxEntries": 10000,
             "recordingEnabled": true,

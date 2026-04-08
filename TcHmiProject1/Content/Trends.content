@@ -8,8 +8,9 @@
 [
   {
     "yAxisId": 1,
-    "symbol": "ADS.PLC1.MAIN.PalletStacker.PalletBufferSensor",
+    "symbol": "ADS.PLC1.MAIN.PalletStacker.fbAfstandSensor.IHmiStackerAfstandSensorSim",
     "lineWidth": 1,
+    "scaleFactor": 0.1,
     "pointDot": false,
     "pointDotRadius": 3,
     "pointDotStrokeWidth": 1,
@@ -40,7 +41,7 @@
 [
   {
     "yAxisId": 1,
-    "symbol": "ADS.PLC1.MAIN.PalletStacker.PalletBufferSensor",
+    "symbol": "ADS.PLC1.MAIN.PalletStacker.fbStackerStatus",
     "lineWidth": 1,
     "pointDot": false,
     "pointDotRadius": 3,

@@ -36,7 +36,7 @@ VAR
     fbPins     : fbTemppalletpins;
     fbLift     : fbStackerServo;
     fbAfstandSensor  : fbAfstandSensor;
-	fbPalletBufferSensor : fbLichtSensor;
+	fbPalletVoorLiftSensor : fbLichtSensor;
 	fbPalletInLiftSensor : fbLichtSensor;
 
     fbStackerStatus    : enPalletStackerStatus := enPalletStackerStatus.Idle;
@@ -111,7 +111,6 @@ IF tonErrorTimer.Q AND fbStackerStatus <> enPalletStackerStatus.Error THEN
 	fbsource.Clear();
 	fbsource.sName := 'error timer';
 	fbalarm.CreateEx(tc_events.StackerEvents.Vastgelopen, TRUE, fbsource);
-	// hoe kijk je als dit gebeurt
 	fbalarm.Raise(0);
 	
 END_IF
@@ -199,7 +198,7 @@ enPalletStackerStatus.Collecting:
         fbLoopband.Beweeg();
         sVolgendeStap := 'Collecting: wacht op PalletBeforeLiftSensor';
 
-        IF fbPalletBufferSensor.SensorWaarde1 THEN
+        IF fbPalletVoorLiftSensor.SensorWaarde1 THEN
             fbLoopband.Stop();
             bPalletVoorLiftSensor := 1;
             bAlarmTrig := FALSE;
